@@ -19,7 +19,8 @@ window.onload = function () {
     html2canvas(container).then(function(canvas){
       var ctxx = canvas.getContext("2d");
       var imageData = canvas.toDataURL("image/jpeg",1.0);
-      var image = Canvas2Image.convertToJPEG(canvas);
+      var image = new Image();//I assume this is neccessary so the next line can operate on an actual thing
+      image = Canvas2Image.convertToJPEG(canvas);
 
       image.onload = function(){
         doc.addImage(imageData, 'JPEG', 10, 10);
@@ -27,18 +28,18 @@ window.onload = function () {
 
         var pageGenerator(cropPosition){
           cropPosition = cropPosition || 1095;
+          doc.addPage();
           var height = 1095;
           var width = image.width;
           var canvas1 = document.createElement('canvas');
-          var ctx = canvas1.getContext("2d");
-
-          doc.addPage();
-
           canvas1.setAttribute('height', height);
           canvas1.setAttribute('width', width);
+
+          var ctx = canvas1.getContext("2d");
           ctx.drawImage(image, 0, cropPosition, width, height, -10, -10, width, height);
 
-          var image2 = Canvas2Image.convertToJPEG(canvas1);// I can't believe you can't chain the setatribute to this
+          var image2 = new Image();
+          image2 = Canvas2Image.convertToJPEG(canvas1);// I can't believe you can't chain the setatribute to this
           image2.setAttribute("id", "image"+count);
 
           document.body.appendChild(image2);
