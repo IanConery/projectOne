@@ -21,7 +21,7 @@ window.onload = function () {
       var ctxx = canvas.getContext("2d");
       var imageData = canvas.toDataURL("image/jpeg",1.0);
       var image = new Image();//pretty sure this does nothing even if it does it looks like it is overwritten by the next line
-      image = Canvas2Image.convertToJPEG(canvas);//can't find a reference to this in html2canvas
+      image = Canvas2Image.convertToJPEG(canvas);//can't find a reference to this in html2canvas or jspdf
 
       image.onload = function(){
         doc.addImage(imageData, 'JPEG', 10, 10);
