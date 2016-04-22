@@ -5,24 +5,28 @@ window.onload = function () {
     var container = document.getElementById("container");
     var doc = new jsPDF();
 
-    container.style.height="100%";
-
-    document.body.style.height = numPages * 1105;
-    document.body.style.width = 800;
-
     var done = function(){
       var fileLabel = localStorage.getItem("dg::fileName") + '.pdf';
       doc.save(fileLabel);
       document.write("<div id='container' width=800>"+localStorage.getItem("dg::export")+localStorage.getItem("dg::export1")+localStorage.getItem("dg::export2")+"</div>");
     };
 
+    container.style.height="100%";
+
+    document.body.style.height = numPages * 1105;//Why is this 10px larger?
+    document.body.style.width = 800;
+
+
     html2canvas(container).then(function(canvas){
       var ctxx = canvas.getContext("2d");
-      var imageData = canvas.toDataURL("image/jpeg",1.0);
+      var imageData = canvas.toDataURL("image/jpeg",1.0);// default quality value is set to 0.92 specifing 1.0 could be a problem
       var image = new Image();//I assume this is neccessary so the next line can operate on an actual thing
       image = Canvas2Image.convertToJPEG(canvas);
 
       image.onload = function(){
+
+        //jspdf issue #339 is talking about problems similar to these ivestigate further
+
         doc.addImage(imageData, 'JPEG', 10, 10);
         var count = 0;
 
