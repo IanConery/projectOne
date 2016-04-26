@@ -6,27 +6,32 @@ var system = require('system');
 // add a footer callback showing page numbers
 page.viewportSize = {width: 600, height: 1095 }
 page.open(system.args[1], function (status) {
-  var title = page.evaluate(function(){
-    return document.title;
-  });
-  page.paperSize = {
-    format: 'Letter',
-    orientation: 'portrait',
-    margin: {left:'1.5cm', right:'1.5cm', top:'1cm', bottom:'1cm'},
-    footer: {
-      height: '0.9cm',
-      contents: phantom.callback(function(pageNum, numPages) {//was align center
-        return "<div><div style='text-align:left;'><small>" + title + "</small></div><div style='text-align:right;'><small>" + pageNum +
-          " / " + numPages + "</small></div></div>";
-      })
-    }
-  };
-  page.zoomFactor = 1.5;//this doesn't seem to work
-  // assume the file is local, so we don't handle status errors
-  // page.open(system.args[1], function (status) {
-  // export to target (can be PNG, JPG or PDF!)
-  page.render(system.args[2]);
-  phantom.exit();
+  console.log('Status ' + status);
+  if(status === 'success'){
+    var title = page.evaluate(function(){
+      return document.title;
+    });
+    page.paperSize = {
+      format: 'Letter',
+      orientation: 'portrait',
+      margin: {left:'1.5cm', right:'1.5cm', top:'1cm', bottom:'1cm'},
+      footer: {
+        height: '0.9cm',
+        contents: phantom.callback(function(pageNum, numPages) {//was align center
+          return "<div><div style='text-align:left;'><small>" + title + "</small></div><div style='text-align:right;'><small>" + pageNum +
+            " / " + numPages + "</small></div></div>";
+        })
+      }
+    };
+    page.zoomFactor = 1.5;//this doesn't seem to work
+    // assume the file is local, so we don't handle status errors
+    // page.open(system.args[1], function (status) {
+    // export to target (can be PNG, JPG or PDF!)
+    page.render(system.args[2]);
+    phantom.exit();
+  }else{
+    console.log('Something went wrong, returning status of ' + status);
+  }
 });
 
 
