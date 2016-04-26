@@ -2,10 +2,11 @@
 //This code has nothing to do with node.js
 var page = require('webpage').create();
 var system = require('system');
-var invoiceNumber = '00012 temp';
+var invoiceNumber = '00012(temp)';
 // change the paper size to A3 or Tabloid as Letter doesn't work, add small margins otherwise the content is cut off
 // add a footer callback showing page number, invoice number and account name
-//TODO add a header as well
+//TODO add a header if needed
+//potentially add page.onConsoleMessage to capture logs from webpage
 page.open(system.args[1], function (status) {
   //this log is purely for me for now
   console.log('Status ' + status);
@@ -20,8 +21,9 @@ page.open(system.args[1], function (status) {
       margin: {left:'0.5cm', right:'0.5cm', top:'1.5cm', bottom:'1.0cm'},
       footer: {
         height: '0.9cm',
-        contents: phantom.callback(function(pageNum, numPages) {//TODO replace the title with the property name
-            return "<div><div style='text-align:left; float:left; width:33%'><small>" + title + "</small></div><div style='text-align:left; float:left; width:33%;'><small> Invoice number" + invoiceNumber + "</small></div><div style='text-align:right; float:left; width:33%'><small>" + pageNum + " / " + numPages + "</small></div></div>";
+        contents: phantom.callback(function(pageNum, numPages) {
+        //TODO replace the title with the property name fix padding on invoice number div and page number div
+            return "<div><div style='text-align:left; float:left; width:33%'><small>Invoice Number: " + invoiceNumber + "</small></div><div style='text-align:left; float:left; width:33%;'><small>Account Name: " + title + "</small></div><div style='text-align:right; float:left; width:33%'><small>" + pageNum + "</small></div></div>";
           })
       }
     };
