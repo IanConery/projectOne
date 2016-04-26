@@ -1,98 +1,36 @@
-
-// html2pdf.js
+//This file contains phantomjs code and needs to run as such see the documentation at http://phantomjs.org/
+//This code has nothing to do with node.js
 var page = require('webpage').create();
 var system = require('system');
-// change the paper size to letter, add some borders
-// add a footer callback showing page numbers
-page.viewportSize = {width: 600, height: 1095 }
+var invoiceNumber = '00012 temp';
+// change the paper size to A3 or Tabloid as Letter doesn't work, add small margins otherwise the content is cut off
+// add a footer callback showing page number, invoice number and account name
+//TODO add a header as well
 page.open(system.args[1], function (status) {
+  //this log is purely for me for now
   console.log('Status ' + status);
   if(status === 'success'){
     var title = page.evaluate(function(){
+      document.body.bgColor = 'white';//this sets the background to white instead of the defaul transparent
       return document.title;
     });
     page.paperSize = {
-      format: 'Letter',
+      format: 'A3',//Tabloid or A3 sizes are the only ones that grab the whole page
       orientation: 'portrait',
-      margin: {left:'1.5cm', right:'1.5cm', top:'1cm', bottom:'1cm'},
+      margin: {left:'0.5cm', right:'0.5cm', top:'1.5cm', bottom:'1.0cm'},
       footer: {
         height: '0.9cm',
-        contents: phantom.callback(function(pageNum, numPages) {//was align center
-          return "<div><div style='text-align:left;'><small>" + title + "</small></div><div style='text-align:right;'><small>" + pageNum +
-            " / " + numPages + "</small></div></div>";
-        })
+        contents: phantom.callback(function(pageNum, numPages) {//TODO replace the title with the property name
+            return "<div><div style='text-align:left; float:left; width:33%'><small>" + title + "</small></div><div style='text-align:left; float:left; width:33%;'><small> Invoice number" + invoiceNumber + "</small></div><div style='text-align:right; float:left; width:33%'><small>" + pageNum + " / " + numPages + "</small></div></div>";
+          })
       }
     };
-    page.zoomFactor = 1.5;//this doesn't seem to work
-    // assume the file is local, so we don't handle status errors
-    // page.open(system.args[1], function (status) {
-    // export to target (can be PNG, JPG or PDF!)
     page.render(system.args[2]);
     phantom.exit();
   }else{
+    // TODO need to handle status errors
     console.log('Something went wrong, returning status of ' + status);
   }
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-var page = require('webpage').create();
-var system = require('system');
-var size;
-
-if (system.args.length < 3 || system.args.length > 5) {
-    console.log('Usage: htmlToPDF.js URL filename [paperwidth*paperheight|paperformat] [zoom]');
-    console.log('  paper (pdf output) examples: "5in*7.5in", "10cm*20cm", "A4", "Letter"');
-    console.log('  image (png/jpg output) examples: "1920px" entire page, window width 1920px');
-    console.log('                                   "800px*600px" window, clipped to 800x600');
-    phantom.exit(1);
-} else {
-    var address = system.args[1];
-    var output = system.args[2];
-    page.viewportSize = { width: 600, height: 600 };
-    if (system.args.length > 3 && system.args[2].substr(-4) === ".pdf") {
-        size = system.args[3].split('*');
-        page.paperSize = size.length === 2 ? { width: size[0], height: size[1], margin: '0px' }
-                                           : { format: system.args[3], orientation: 'portrait', margin: '1cm' };
-    } else if (system.args.length > 3 && system.args[3].substr(-2) === "px") {
-        size = system.args[3].split('*');
-        if (size.length === 2) {
-            pageWidth = parseInt(size[0], 10);
-            pageHeight = parseInt(size[1], 10);
-            page.viewportSize = { width: pageWidth, height: pageHeight };
-            page.clipRect = { top: 0, left: 0, width: pageWidth, height: pageHeight };
-        } else {
-            console.log("size:", system.args[3]);
-            pageWidth = parseInt(system.args[3], 10);
-            pageHeight = parseInt(pageWidth * 3/4, 10); // it's as good an assumption as any
-            console.log ("pageHeight:",pageHeight);
-            page.viewportSize = { width: pageWidth, height: pageHeight };
-        }
-    }
-    if (system.args.length > 4) {
-        page.zoomFactor = system.args[4];
-    }
-    page.open(address, function (status) {
-        if (status !== 'success') {
-            console.log('Unable to load the address!');
-            phantom.exit(1);
-        } else {
-            window.setTimeout(function () {
-                page.render(output);
-                phantom.exit();
-            }, 200);
-        }
-    });
-}*/
