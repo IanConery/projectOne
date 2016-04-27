@@ -6,6 +6,10 @@ var page = require('webpage').create();
 var system = require('system');
 //invoiceNumber will be populated dynamicaly later, also need to add the 'title' dynamicaly
 var invoiceNumber = '00012(temp)';
+//this might be neccessary later
+page.settings = {
+  localToRemoteUrlAccessEnabled: true
+};
 //capture logs from the webpage
 page.onConsoleMessage = function(msg) {
     console.log(msg);
