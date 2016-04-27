@@ -17,7 +17,7 @@ page2.open('http://host1.controlco.com', function(status){
   for(var i in cookies){
     console.log(cookies[i].name + '=' + cookies[i].value);
   }
-  phantom.exit();
+  // phantom.exit();
 });
 //capture logs from the webpage
 page.onConsoleMessage = function(msg) {
