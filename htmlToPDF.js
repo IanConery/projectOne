@@ -1,5 +1,6 @@
 //This file contains phantomjs code and needs to run as such see the documentation at http://phantomjs.org/
 //This code has nothing to do with node.js
+//TODO see if I need to inject some js library that they are using or something of the like
 var page = require('webpage').create();
 var system = require('system');
 var invoiceNumber = '00012(temp)';
@@ -27,8 +28,10 @@ page.open(system.args[1], function (status) {
           })
       }
     };
-    page.render(system.args[2]);
-    phantom.exit();
+    window.setTimeout(function(){
+      page.render(system.args[2]);
+      phantom.exit();
+    }, 2000);
   }else{
     // TODO need to handle status errors
     console.log('Something went wrong, returning status of ' + status);
