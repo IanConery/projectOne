@@ -2,9 +2,23 @@
 //This code has nothing to do with node.js
 //usage ---> phantomjs htmlToPDF.js [url or file path] [destination file .pdf]
 var page = require('webpage').create();
+var page2 = require('webpage').create();
 var system = require('system');
 //invoiceNumber will be populated dynamicaly later, also need to add the 'title' dynamicaly
 var invoiceNumber = '00012(temp)';
+page2.open('http://host1.controlco.com', function(status){
+  page2.settings = {
+    userName: 'dgSuper',
+    password: 'dglux1234'
+  };
+  console.log('Page2 status ' + status);
+  var cookies = page2.cookies;
+  console.log('listing cookies');
+  for(var i in cookies){
+    console.log(cookies[i].name + '=' + cookies[i].value);
+  }
+  phantom.exit();
+});
 //capture logs from the webpage
 page.onConsoleMessage = function(msg) {
     console.log(msg);
