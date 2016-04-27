@@ -9,6 +9,11 @@ var invoiceNumber = '00012(temp)';
 // add a footer callback showing page number, invoice number and account name
 //TODO add a header if needed
 //potentially add page.onConsoleMessage to capture logs from webpage
+//Trying .settings to authenticate as I recieve a CORS error when no logged in trying to view html
+page.settings = {
+  userName: 'dgSuper',
+  password: 'dglux1234'
+};
 page.open(system.args[1], function (status) {
   //this log is purely for me for now
   console.log('Status ' + status);
