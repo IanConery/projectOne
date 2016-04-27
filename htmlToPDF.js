@@ -1,6 +1,7 @@
 //This file contains phantomjs code and needs to run as such see the documentation at http://phantomjs.org/
 //This code has nothing to do with node.js
 //TODO see if I need to inject some js library that they are using or something of the like
+//usage ---> phantomjs htmlToPDF.js [url or file path] [destination file .dpf]
 var page = require('webpage').create();
 var system = require('system');
 var invoiceNumber = '00012(temp)';
