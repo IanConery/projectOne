@@ -1,6 +1,7 @@
 //This file contains phantomjs code and needs to run as such see the documentation at http://phantomjs.org/
 //This code has nothing to do with node.js
 //usage ---> phantomjs htmlToPDF.js [url or file path] [destination file .pdf]
+//PROBLEM --- required files are not available to render the css properly --- PROBLEM
 var page = require('webpage').create();
 var system = require('system');
 //invoiceNumber will be populated dynamicaly later, also need to add the 'title' dynamicaly
