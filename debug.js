@@ -14,6 +14,10 @@ var system = require('system');
 var invoiceNumber = system.args[3] || '00012(temp)';
 var time = new Date().getSeconds();
 console.log(time);
+var path = system.path;
+console.log('PATH', path);
+
+var styles = ['_styles', 'app', 'app_icons', 'block_icons', 'charts', 'colored_icons', 'component', 'dglux', 'dock-manager', 'editor', 'fonts', 'grid', 'loader', 'style', 'tree', 'view'];
 
 //capture logs from the webpage
 page.onConsoleMessage = function(msg) {
@@ -21,10 +25,14 @@ page.onConsoleMessage = function(msg) {
 };
 //log requests
 page.onResourceRequested = function(data, request){
-  // if((/http:\/\/.+?\/login/gi).test((data['url'])){
-  //   console.log('Skipping: ', data['url']);
-  //   request.abort();
-  // }
+  var ending = data['url'].slice(-4);
+  if(ending === '.css'){
+    var file = /\/(\w+)\.css/gi.exec(data['url'])[1];
+    if(styles.indexOf(file)){
+      // var newFile = data['url'].replace()
+      console.log('I HAVE THIS FILE LOCALLY')
+    }
+  }
   console.log('::loading', data['url']);
 };
 //catch error messages and stack trace
