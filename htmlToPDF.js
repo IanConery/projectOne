@@ -1,7 +1,7 @@
 //This file contains phantomjs code and needs to run as such see the documentation at http://phantomjs.org/
 //This code has nothing to do with node.js
 //usage ---> phantomjs htmlToPDF.js [url or file path] [destination file .pdf]
-//PROBLEM --- required files are not available to render the css properly --- PROBLEM
+/*PROBLEM --- required files are not available to render the css properly --- PROBLEM*/
 var page = require('webpage').create();
 var system = require('system');
 //invoiceNumber will be populated dynamicaly later, also need to add the 'title' dynamicaly
@@ -12,6 +12,19 @@ page.settings.localToRemoteUrlAccessEnabled = true;
 page.onConsoleMessage = function(msg) {
     console.log(msg);
 };
+//log requests
+page.onResourceRequested = function(data, request){
+  console.log('::loading', data['url']);
+};
+/*//exit once finished
+page.onLoadFinished = function(){
+  console.log('::rendering');
+  page.render(system.args[2]);
+  phantom.exit();
+};
+//add the css to the head here
+var content = '';*/
+
 // change the paper size to A3 or Tabloid as Letter doesn't work, add small margins otherwise the content is cut off
 //TODO add a header if needed
 page.open(system.args[1], function (status) {
