@@ -5,7 +5,9 @@ var page2 = require('webpage').create();
 var system = require('system');
 var invoiceNumber = '00012(temp)';
 var stepIndex = 0;
-var cookies;
+var loadInProgress = false;
+var date = new Date();
+var milSec = date.getMilliseconds();
 
 page.onConsoleMessage = function(msg) {
     console.log('page one msg: ', msg);
@@ -13,6 +15,15 @@ page.onConsoleMessage = function(msg) {
 
 page2.onConsoleMessage = function(msg) {
     console.log('page two msg: ', msg);
+};
+
+page.onLoadStarted = function() {
+    loadInProgress = true;
+    console.log('Loading started');
+};
+page.onLoadFinished = function() {
+    loadInProgress = false;
+    console.log('Loading finished');
 };
 
 var executeStepsInOrder = function(){
@@ -29,21 +40,27 @@ var executeStepsInOrder = function(){
 var steps = [
   function(){
     console.log('step one - open host1 page');
+    console.log('  MilSec: ' + milSec);
     page2.open('http://host1.controlco.com/login', function(status){
       console.log('Page2 status ' + status);
     });
   },
   function(){
     console.log('step two - populate login form and submit');
+    milSec = new Date().getMilliseconds();
+    console.log('  MilSec: ' + milSec);
     page2.evaluate(function(){
-      document.getElementById('username').value('dgSuper');
-      document.getElementById('password').value('dglux1234');
-      document.getElementById('submitButton').submit();
+      setTimeout(function(){},4000);
+      document.getElementById('username').value = 'dgSuper';
+      document.getElementById('password').value = 'dglux1234';
+      document.getElementById('submitButton').click();
     });
     console.log('Signed in!');
   },
   function(){
-    console.log('step three - wait for dg to sign in and retreive the cookie');
+    console.log('Skipping: step three - wait for dg to sign in and retreive the cookie');
+    milSec = new Date().getMilliseconds();
+    console.log('  MilSec: ' + milSec);
     cookies = page2.cookies;
     console.log('listing cookies');
     for(var i in cookies){
@@ -51,13 +68,15 @@ var steps = [
     }
   },
   function(){
-    console.log('step four - set cookies for the page, open the page and add paper settings');
-    page.addCookie({
-      name: cookies[0].name,
-      value: cookies[0].value,
-      path: '/path',
-      expires: (new Date()).getTime() + (1000 * 60 * 60)
-    });
+    console.log('step four - /*set cookies for the page,*/ open the page and add paper settings');
+    milSec = new Date().getMilliseconds();
+    console.log('  MilSec: ' + milSec);
+    // page.addCookie({
+    //   name: cookies[0].name,
+    //   value: cookies[0].value,
+    //   path: '/path',
+    //   expires: (new Date()).getTime() + (1000 * 60 * 60)
+    // });
     page.open(system.args[1], function (status) {
       var title = page.evaluate(function(){
         //.bgColor sets the background to white instead of the defaul transparent
@@ -81,6 +100,8 @@ var steps = [
   },
   function(){
     console.log('step five - render the page to pdf');
+    milSec = new Date().getMilliseconds();
+    console.log('  MilSec: ' + milSec);
     page.render(system.args[2]);
   }
 ];
