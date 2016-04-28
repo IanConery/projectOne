@@ -16,6 +16,13 @@ page.onConsoleMessage = function(msg) {
 page.onResourceRequested = function(data, request){
   console.log('::loading', data['url']);
 };
+//catch errors
+page.onError = function (msg, trace) {
+    console.log(msg);
+    trace.forEach(function(item) {
+        console.log('  ', item.file, ':', item.line);
+    });
+};
 /*//exit once finished
 page.onLoadFinished = function(){
   console.log('::rendering');
