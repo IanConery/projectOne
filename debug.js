@@ -8,39 +8,59 @@ RegExp.prototype.test = function(str){
 };
 /********* End fill **** for more information see ianconery.com/2015/08/regexp-test-bug-in-javascript **********/
 
+
 var page = require('webpage').create();
 var system = require('system');
 //invoiceNumber will be populated dynamicaly later, also need to add the 'title' dynamicaly
 var invoiceNumber = system.args[3] || '00012(temp)';
 var time = new Date().getSeconds();
-console.log(time);
 
-var styles = ['_styles', 'app', 'app_icons', 'block_icons', 'charts', 'colored_icons', 'component', 'dglux', 'dock-manager', 'editor', 'fonts', 'grid', 'loader', 'style', 'tree', 'view'];
+// var styles = ['_styles', 'app', 'app_icons', 'block_icons', 'charts', 'colored_icons', 'component', 'dglux', 'dock-manager', 'editor', 'fonts', 'grid', 'loader', 'style', 'tree', 'view'];
+
+// var path = 'file:///C:/Users/Ian/Desktop/projectOne/DGLux5%20by%20DGLogik_files/';
+// var stylePaths = [];
+
+var styles = [];
+
+/*************************************** Page Error Handling ************************************************/
 
 //capture logs from the webpage
 page.onConsoleMessage = function(msg) {
     console.log(msg);
 };
-//log requests
+//log requests and block css requests as they are 302ed to the login page
 page.onResourceRequested = function(data, request){
-  var ending = data['url'].slice(-4);
-  if(ending === '.css'){
-    var file = /\/(\w+)\.css/gi.exec(data['url'])[1];
-    if(styles.indexOf(file)){
-      // var newFile = data['url'].replace()
-      console.log('I HAVE THIS FILE LOCALLY')
+    if ((/http:\/\/.+?\.css$/gi).test(data['url'])) {
+      var fileName = /\/(\w+)\.css/gi.exec(data['url'])[1];
+      styles.push(fileName);
+      console.log('Skipping', data['url']);
+      request.abort();
+    }else{
+      console.log('::loading', data['url']);
     }
-  }
-  console.log('::loading', data['url']);
 };
-//catch error messages and stack trace
+//log the responses from the requests
+page.onResourceReceived = function(response) {
+  console.log('Response (#' + response.id + ', stage "' + response.stage + '"): ' + JSON.stringify(response.headers));
+};
+//catch error messages and stack trace from the page
 page.onError = function (msg, trace) {
     console.log(msg);
     trace.forEach(function(item) {
         console.log('  ', item.file, ':', item.line);
     });
 };
+//log the response if the resource takes too long
+page.onResourceTimeout = function(request) {
+    console.log('Response (#' + request.id + '): ' + JSON.stringify(request));
+};
+//log the error if the resource fails to load
+page.onResourceError = function(resourceError) {
+  console.log('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
+  console.log('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
+};
 
+/*************************************** End Page Error Handling ********************************************/
 
 // change the paper size to A3 or Tabloid as Letter doesn't work, add small margins otherwise the content is cut off
 //TODO add a header if needed
@@ -51,6 +71,8 @@ page.open(system.args[1], function (status) {
     time = new Date().getSeconds();
     console.log('Step One - Cut A Hole In The Box')
     console.log('   Time: ', time)
+    var content = page.content;
+    // console.log('Content: ' + content);
     //use this to sign into any dglux page
     // page.evaluate(function(){
     //   var user = document.getElementById('username');
@@ -65,9 +87,16 @@ page.open(system.args[1], function (status) {
     //   }
     // });
     // window.setTimeout(function(){ //don't need this if not authenticating
-      // time = new Date().getSeconds();
-      // console.log('Step Two - Put Your Junk In That Box')
-      // console.log('   Time: ', time)
+      // if(stylePaths.length !== 0){
+      //   page.evaluate(function(){
+      //     //this doesn't recognize the function declared at the top of the file
+      //     addCSSToPage(stylePaths);
+      //   });
+      //   console.log('Added CSS Local Paths');
+      // }
+      time = new Date().getSeconds();
+      console.log('Step Two - Put Your Junk In That Box')
+      console.log('   Time: ', time)
       var title = page.evaluate(function(){
         //.bgColor sets the background to white instead of the defaul transparent
         //document.body.bgColor = 'white';// removed for now as I don't see a difference
