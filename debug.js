@@ -52,14 +52,18 @@ page.open(system.args[1], function (status) {
     console.log('Step One - Cut A Hole In The Box')
     console.log('   Time: ', time)
     //use this to sign into any dglux page
-/*    page.evaluate(function(){
-      var user = document.getElementById('username');
-      user.value = 'dgSuper';
-      var pass = document.getElementById('password');
-      pass.value = 'dglux1234';
-      var button = document.getElementById('submitButton');
-      button.click();
-    });*/
+    // page.evaluate(function(){
+    //   var user = document.getElementById('username');
+    //   user.value = 'dgSuper';
+    //   var pass = document.getElementById('password');
+    //   pass.value = 'dglux1234';
+    //   var button = document.getElementById('submitButton');
+    //   button.click();
+    //   var styleSheet = document.styleSheets;
+    //   for(var i in styleSheets){
+    //     console.log('Sheet ' + i + styleSheets[i].href);
+    //   }
+    // });
     // window.setTimeout(function(){ //don't need this if not authenticating
       // time = new Date().getSeconds();
       // console.log('Step Two - Put Your Junk In That Box')
