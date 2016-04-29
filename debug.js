@@ -14,8 +14,6 @@ var system = require('system');
 var invoiceNumber = system.args[3] || '00012(temp)';
 var time = new Date().getSeconds();
 console.log(time);
-var path = system.path;
-console.log('PATH', path);
 
 var styles = ['_styles', 'app', 'app_icons', 'block_icons', 'charts', 'colored_icons', 'component', 'dglux', 'dock-manager', 'editor', 'fonts', 'grid', 'loader', 'style', 'tree', 'view'];
 
