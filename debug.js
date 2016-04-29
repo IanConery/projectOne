@@ -13,6 +13,7 @@ var page = require('webpage').create();
 var system = require('system');
 //invoiceNumber will be populated dynamicaly later, also need to add the 'title' dynamicaly
 var invoiceNumber = system.args[3] || '00012(temp)';
+
 var time = new Date().getSeconds();
 
 // var styles = ['_styles', 'app', 'app_icons', 'block_icons', 'charts', 'colored_icons', 'component', 'dglux', 'dock-manager', 'editor', 'fonts', 'grid', 'loader', 'style', 'tree', 'view'];
@@ -40,9 +41,9 @@ page.onResourceRequested = function(data, request){
     }
 };
 //log the responses from the requests
-page.onResourceReceived = function(response) {
-  console.log('Response (#' + response.id + ', stage "' + response.stage + '"): ' + JSON.stringify(response.headers));
-};
+// page.onResourceReceived = function(response) {
+//   console.log('Response (#' + response.id + ', stage "' + response.stage + '"): ' + JSON.stringify(response.headers));
+// };
 //catch error messages and stack trace from the page
 page.onError = function (msg, trace) {
     console.log(msg);
@@ -116,6 +117,7 @@ page.open(system.args[1], function (status) {
             })
         }
       };
+      console.log(styles,typeof styles[0]);
       window.setTimeout(function(){
         time = new Date().getSeconds();
         console.log('Step Three - And Thats How You Do It')

@@ -1,20 +1,27 @@
 //This file contains phantomjs code and needs to run as such see the documentation at http://phantomjs.org/
-//This code has nothing to do with node.js
-//usage ---> phantomjs htmlToPDF.js [url or file path] [destination file .pdf]
+//<--- USAGE ---> phantomjs htmlToPDF.js [url or file path] [destination file .pdf] [invoiceNumber] []
+
+/******** This is fill to prevent a bug from occuring **********************************************************/
+RegExp.prototype.test = function(str){
+  return str.match(this) !== null;
+};
+/********* End fill **** for more information see ianconery.com/2015/08/regexp-test-bug-in-javascript **********/
+
 var page = require('webpage').create();
 var system = require('system');
-//invoiceNumber will be populated dynamicaly later, also need to add the 'title' dynamicaly
-var invoiceNumber = '00012(temp)';
+var invoiceNumber = system.args[3] || 'Invoice Number Not Available';
+var buildingName = system.args[4] || 'Account Name Not Available';
+var styles = [];
+var fonts = [];
+
+/*************************************** Page Error Handling ************************************************/
 
 //capture logs from the webpage
 page.onConsoleMessage = function(msg) {
     console.log(msg);
 };
-//log requests
-page.onResourceRequested = function(data, request){
-  console.log('::loading', data['url']);
-};
-//catch error messages and stack trace
+
+//catch error messages and stack trace from the page
 page.onError = function (msg, trace) {
     console.log(msg);
     trace.forEach(function(item) {
@@ -22,16 +29,59 @@ page.onError = function (msg, trace) {
     });
 };
 
+//log requests and block requests
+page.onResourceRequested = function(data, request){
+    //Block css requests
+    if((/http:\/\/.+?\.css$/gi).test(data['url'])) {
+      //Grab the file name and add to list for local loading later
+      var fileName = /\/(\w+)\.css/gi.exec(data['url'])[1];
+      styles.push(fileName);
+      console.log('Skipping CSS', data['url']);
+      request.abort();
+    //Block all ttf requests
+    }else if((/http:\/\/.+?\.ttf$/gi).test(data['url'])){
+      //Grab the name of the font and add to list for local loading
+      //Not using regex as it wasn't capturing unusual file names
+      var url = data['url'].split('/');
+      var fileName = url[url.length - 1];
+      // var fileName = /\/(\w+)\.ttf/gi.exec(data['url'])[1];
+      fonts.push(fileName);
+      console.log('Skipping Font', data['url']);
+      request.abort();
+    }else{
+      //Log any other request so we can eventually block those too
+      console.log('::loading', data['url']);
+    }
+};
+
+//log the response if the resource takes too long
+page.onResourceTimeout = function(request) {
+    console.log('Response (#' + request.id + '): ' + JSON.stringify(request));
+};
+
+//log the responses from the requests
+// page.onResourceReceived = function(response) {
+//   console.log('Response (#' + response.id + ', stage "' + response.stage + '"): ' + JSON.stringify(response.headers));
+// };
+
+//log the error if the resource fails to load
+// page.onResourceError = function(resourceError) {
+//   console.log('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
+//   console.log('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
+// };
+
+/*************************************** End Page Error Handling ********************************************/
+
+
 // change the paper size to A3 or Tabloid as Letter doesn't work, add small margins otherwise the content is cut off
-//TODO add a header if needed
 page.open(system.args[1], function (status) {
-  //this log is purely for me for now
+  console.log('CSS File Names ', styles);
+  console.log('Font File Names ', fonts);
   console.log('Status ' + status);
   if(status === 'success'){
-    var title = page.evaluate(function(){
+    page.evaluate(function(){
       //.bgColor sets the background to white instead of the defaul transparent
-      document.body.bgColor = 'white';// removed for now as I don't see a difference
-      return document.title;
+      document.body.bgColor = 'white';
     });
     page.paperSize = {
       format: 'A3',//Tabloid or A3 sizes are the only ones that grab the whole page
@@ -41,8 +91,8 @@ page.open(system.args[1], function (status) {
         height: '0.9cm',
         // add a footer callback showing page number, invoice number and account name
         contents: phantom.callback(function(pageNum, numPages) {
-        //TODO replace the title with the property name fix padding on invoice number div and page number div
-            return "<div><div style='text-align:left; float:left; width:33%'><small>Invoice Number: " + invoiceNumber + "</small></div><div style='text-align:left; float:left; width:33%;'><small>Account Name: " + title + "</small></div><div style='text-align:right; float:left; width:33%'><small>" + pageNum + "</small></div></div>";
+        //TODO: fix padding on invoice number div and page number div
+            return "<div><div style='text-align:left; float:left; width:33%'><small>Invoice Number: " + invoiceNumber + "</small></div><div style='text-align:left; float:left; width:33%;'><small>Account Name: " + buildingName + "</small></div><div style='text-align:right; float:left; width:33%'><small>" + pageNum + "</small></div></div>";
           })
       }
     };
