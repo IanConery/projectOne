@@ -18,10 +18,11 @@ var time = new Date().getSeconds();
 
 // var styles = ['_styles', 'app', 'app_icons', 'block_icons', 'charts', 'colored_icons', 'component', 'dglux', 'dock-manager', 'editor', 'fonts', 'grid', 'loader', 'style', 'tree', 'view'];
 
-// var path = 'file:///C:/Users/Ian/Desktop/projectOne/DGLux5%20by%20DGLogik_files/';
+
 // var stylePaths = [];
 
 var styles = [];
+var fonts = [];
 
 /*************************************** Page Error Handling ************************************************/
 
@@ -31,15 +32,47 @@ page.onConsoleMessage = function(msg) {
 };
 //log requests and block css requests as they are 302ed to the login page
 page.onResourceRequested = function(data, request){
-    if ((/http:\/\/.+?\.css$/gi).test(data['url'])) {
+    //Block css requests
+    if((/http:\/\/.+?\.css$/gi).test(data['url'])) {
+      //Grab the file name and add to list for local loading later
       var fileName = /\/(\w+)\.css/gi.exec(data['url'])[1];
       styles.push(fileName);
-      console.log('Skipping', data['url']);
+      console.log('Skipping CSS', data['url']);
+      // page.evaluate(function(fileName){
+      //   var path = 'file:\\C:\\Users\\Ian\\Desktop\\Styles\\';
+      //   var head = document.head;
+      //   var element = document.createElement('link');
+      //   element.type = 'text/css';
+      //   element.rel = 'stylesheet';
+      //   element.href = path + fileName + '.css';
+      //   head.appendChild(element);
+      // },fileName);
+      request.abort();
+    //Block all ttf requests
+    }else if((/http:\/\/.+?\.ttf$/gi).test(data['url'])){
+      //Grab the name of the font and add to list for local loading
+      //Not using regex as it wasn't capturing unusual file names
+      var url = data['url'].split('/');
+      var fileName = url[url.length - 1];
+      // var fileName = /\/(\w+)\.ttf/gi.exec(data['url'])[1];
+      fonts.push(fileName);
+      console.log('Skipping Font', data['url']);
+      page.evaluate(function(fileName){
+        var path = 'file:\\C:\\Users\\Ian\\Desktop\\Styles\\';
+        var head = document.head;
+        var element = document.createElement('link');
+        element.type = 'text/css';
+        element.rel = 'stylesheet';
+        element.href = path + fileName + '.ttf';
+        head.appendChild(element);
+      },fileName);
       request.abort();
     }else{
+      //Log any other request so we can eventually block those too
       console.log('::loading', data['url']);
     }
 };
+
 //log the responses from the requests
 // page.onResourceReceived = function(response) {
 //   console.log('Response (#' + response.id + ', stage "' + response.stage + '"): ' + JSON.stringify(response.headers));
@@ -62,6 +95,14 @@ page.onResourceError = function(resourceError) {
 };
 
 /*************************************** End Page Error Handling ********************************************/
+
+page.onLoadStarted = function() {
+  var head = page.evaluate(function() {
+    return document.head;
+  });
+  console.log('Head ' + head + ' will gone...');
+  console.log('Now loading a new page...');
+};
 
 // change the paper size to A3 or Tabloid as Letter doesn't work, add small margins otherwise the content is cut off
 //TODO add a header if needed
@@ -117,7 +158,8 @@ page.open(system.args[1], function (status) {
             })
         }
       };
-      console.log(styles,typeof styles[0]);
+      console.log(styles);
+      console.log(fonts);
       window.setTimeout(function(){
         time = new Date().getSeconds();
         console.log('Step Three - And Thats How You Do It')
