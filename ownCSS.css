@@ -1,0 +1,50 @@
+* {
+    border-width: 0px;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+    padding: 0px;
+    overflow: hidden;
+    z-index: 3;
+}
+
+/*from component*/
+
+.dgLabel{
+  display: -webkit-flex;
+  -webkit-align-items:center;
+  -webkit-justify-content:right;
+}
+
+/*from view*/
+
+div,img{
+  z-index:0;
+  pointer-events:auto;
+  box-sizing:border-box;
+}
+
+div.absolute > div, div.absolute > svg{
+  position:absolute;
+}
+
+div.horizontal{
+  /*align-content: flex-start;*/
+  /*flex-wrap: wrap;*/
+  display: -webkit-flexbox;
+  /*display: flex;*/
+  flex-direction: row;
+
+  align-content:flex-start;
+  -webkit-align-content:flex-start;
+}
+
+div.horizontal > div, div.horizontal > svg{
+  position: relative;
+}
+
+
+/*Daniel is forcing this at the end when he exports, I don't see a difference*/
+/*body {
+  overflow: scroll !important;
+}*/

@@ -17,7 +17,7 @@ var invoiceNumber = system.args[3] || '00012(temp)';
 var time = new Date().getSeconds();
 
 // var styles = ['_styles', 'app', 'app_icons', 'block_icons', 'charts', 'colored_icons', 'component', 'dglux', 'dock-manager', 'editor', 'fonts', 'grid', 'loader', 'style', 'tree', 'view'];
-
+console.log(time);
 
 // var stylePaths = [];
 
@@ -38,16 +38,17 @@ page.onResourceRequested = function(data, request){
       var fileName = /\/(\w+)\.css/gi.exec(data['url'])[1];
       styles.push(fileName);
       console.log('Skipping CSS', data['url']);
-      // if(fileName !== 'view'){
-        page.evaluate(function(fileName){
-          var path = 'file:\\C:\\Users\\Ian\\Desktop\\Styles\\';
-          var head = document.head;
-          var element = document.createElement('link');
-          element.type = 'text/css';
-          element.rel = 'stylesheet';
-          element.href = path + fileName + '.css';
-          head.appendChild(element);
-        },fileName);
+      // if(fileName !== 'loader' && fileName !== 'app'){
+      // if(fileName === 'view' || fileName === 'component'){
+      //   page.evaluate(function(fileName){
+      //     var path = 'file:\\C:\\Users\\Ian\\Desktop\\Styles\\';
+      //     var head = document.head;
+      //     var element = document.createElement('link');
+      //     element.type = 'text/css';
+      //     element.rel = 'stylesheet';
+      //     element.href = path + fileName + '.css';
+      //     head.appendChild(element);
+      //   },fileName);
       // }
       request.abort();
     //Block all ttf requests
@@ -65,7 +66,7 @@ page.onResourceRequested = function(data, request){
         var element = document.createElement('link');
         element.type = 'text/css';
         element.rel = 'stylesheet';
-        element.href = path + fileName + '.ttf';
+        element.href = path + fileName/* + '.ttf'*/;
         head.appendChild(element);
       },fileName);
       request.abort();
@@ -106,11 +107,46 @@ page.onResourceTimeout = function(request) {
 //   console.log('Now loading a new page...');
 // };
 
+
 // change the paper size to A3 or Tabloid as Letter doesn't work, add small margins otherwise the content is cut off
 //TODO add a header if needed
 page.open(system.args[1], function (status) {
+
+
+phantom.addCookie({
+  'name': '_ga',
+  'value':'GA1.2.1150521923.1461282723',
+  'domain':'.controlco.com',
+  'path': '/',
+  'httponly': true,
+  'secure': false,
+  'expires': (new Date()).getTime() + (1000 * 60 * 60)
+});
+
+phantom.addCookie({
+  'name': 'niagara_session',
+  'value':'s83fa9c59760587c59b68f093d2ad06bcfff3bcac4d3fca91e4',
+  'domain':'host1.controlco.com',
+  'path': '/',
+  'httponly': true,
+  'secure': false,
+  'expires': (new Date()).getTime() + (1000 * 60 * 60)
+});
+
+
+
+
   //this log is purely for me for now
   console.log('Status ' + status);
+    page.evaluate(function(){
+    var path = 'file:\\C:\\Users\\Ian\\Desktop\\projectOne\\ownCSS.css';
+    var head = document.head;
+    var element = document.createElement('link');
+    element.type = 'text/css';
+    element.rel = 'stylesheet';
+    element.href = path;
+    head.appendChild(element);
+  });
   if(status === 'success'){
     time = new Date().getSeconds();
     console.log('Step One - Cut A Hole In The Box')
