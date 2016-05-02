@@ -38,15 +38,17 @@ page.onResourceRequested = function(data, request){
       var fileName = /\/(\w+)\.css/gi.exec(data['url'])[1];
       styles.push(fileName);
       console.log('Skipping CSS', data['url']);
-      // page.evaluate(function(fileName){
-      //   var path = 'file:\\C:\\Users\\Ian\\Desktop\\Styles\\';
-      //   var head = document.head;
-      //   var element = document.createElement('link');
-      //   element.type = 'text/css';
-      //   element.rel = 'stylesheet';
-      //   element.href = path + fileName + '.css';
-      //   head.appendChild(element);
-      // },fileName);
+      // if(fileName !== 'view'){
+        page.evaluate(function(fileName){
+          var path = 'file:\\C:\\Users\\Ian\\Desktop\\Styles\\';
+          var head = document.head;
+          var element = document.createElement('link');
+          element.type = 'text/css';
+          element.rel = 'stylesheet';
+          element.href = path + fileName + '.css';
+          head.appendChild(element);
+        },fileName);
+      // }
       request.abort();
     //Block all ttf requests
     }else if((/http:\/\/.+?\.ttf$/gi).test(data['url'])){
@@ -89,20 +91,20 @@ page.onResourceTimeout = function(request) {
     console.log('Response (#' + request.id + '): ' + JSON.stringify(request));
 };
 //log the error if the resource fails to load
-page.onResourceError = function(resourceError) {
-  console.log('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
-  console.log('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
-};
+// page.onResourceError = function(resourceError) {
+//   console.log('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
+//   console.log('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
+// };
 
 /*************************************** End Page Error Handling ********************************************/
 
-page.onLoadStarted = function() {
-  var head = page.evaluate(function() {
-    return document.head;
-  });
-  console.log('Head ' + head + ' will gone...');
-  console.log('Now loading a new page...');
-};
+// page.onLoadStarted = function() {
+//   var head = page.evaluate(function() {
+//     return document.head;
+//   });
+//   console.log('Head ' + head + ' will gone...');
+//   console.log('Now loading a new page...');
+// };
 
 // change the paper size to A3 or Tabloid as Letter doesn't work, add small margins otherwise the content is cut off
 //TODO add a header if needed
@@ -141,7 +143,7 @@ page.open(system.args[1], function (status) {
       console.log('   Time: ', time)
       var title = page.evaluate(function(){
         //.bgColor sets the background to white instead of the defaul transparent
-        //document.body.bgColor = 'white';// removed for now as I don't see a difference
+        // document.body.bgColor = 'white';// removed for now as I don't see a difference
         return document.title;
       });
       var buildingName = system.args[4] || title;
