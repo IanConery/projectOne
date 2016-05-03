@@ -38,7 +38,7 @@ page.onResourceRequested = function(data, request){
       var fileName = /\/(\w+)\.css/gi.exec(data['url'])[1];
       styles.push(fileName);
       console.log('Skipping CSS', data['url']);
-      // if(fileName !== 'loader' && fileName !== 'app'){
+      // if(fileName !== 'loader'){
       // if(fileName === 'view' || fileName === 'component'){
       //   page.evaluate(function(fileName){
       //     var path = 'file:\\C:\\Users\\Ian\\Desktop\\Styles\\';
@@ -112,7 +112,7 @@ page.onResourceTimeout = function(request) {
 //TODO add a header if needed
 page.open(system.args[1], function (status) {
 
-
+/*
 phantom.addCookie({
   'name': '_ga',
   'value':'GA1.2.1150521923.1461282723',
@@ -132,7 +132,7 @@ phantom.addCookie({
   'secure': false,
   'expires': (new Date()).getTime() + (1000 * 60 * 60)
 });
-
+*/
 
 
 

@@ -31,8 +31,8 @@ div.absolute > div, div.absolute > svg{
 div.horizontal{
   /*align-content: flex-start;*/
   /*flex-wrap: wrap;*/
-  display: -webkit-flexbox;
-  /*display: flex;*/
+  /*display: -webkit-flexbox;*/
+  display: flex;
   flex-direction: row;
 
   align-content:flex-start;
