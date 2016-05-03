@@ -108,18 +108,13 @@ page.onResourceTimeout = function(request) {
 // };
 
 page.onLoadFinished = function(){
-  time = new Date().getSeconds();
-  console.log('Before timeout')
-  console.log('   Time: ', time)
-  page.render(system.args[2]);
-
   window.setTimeout(function(){
     time = new Date().getSeconds();
-    console.log('After timeout');
+    console.log('Finished');
     console.log('   Time: ', time);
-    page.render('afterTime.pdf');
+    page.render(system.args[2]);
     phantom.exit();
-  },5000);
+  },2000);
 };
 
 
@@ -127,33 +122,12 @@ page.onLoadFinished = function(){
 //TODO add a header if needed
 page.open(system.args[1], function (status) {
 
-/*
-phantom.addCookie({
-  'name': '_ga',
-  'value':'GA1.2.1150521923.1461282723',
-  'domain':'.controlco.com',
-  'path': '/',
-  'httponly': true,
-  'secure': false,
-  'expires': (new Date()).getTime() + (1000 * 60 * 60)
-});
-
-phantom.addCookie({
-  'name': 'niagara_session',
-  'value':'s83fa9c59760587c59b68f093d2ad06bcfff3bcac4d3fca91e4',
-  'domain':'host1.controlco.com',
-  'path': '/',
-  'httponly': true,
-  'secure': false,
-  'expires': (new Date()).getTime() + (1000 * 60 * 60)
-});
-*/
 
 
 
   //this log is purely for me for now
   console.log('Status ' + status);
-/*    page.evaluate(function(){
+    page.evaluate(function(){
     var path = 'file:\\C:\\Users\\Ian\\Desktop\\projectOne\\ownCSS.css';
     var head = document.head;
     var element = document.createElement('link');
@@ -161,34 +135,14 @@ phantom.addCookie({
     element.rel = 'stylesheet';
     element.href = path;
     head.appendChild(element);
-  });*/
+  });
   if(status === 'success'){
     time = new Date().getSeconds();
     console.log('Step One - Cut A Hole In The Box')
     console.log('   Time: ', time)
     var content = page.content;
-    // console.log('Content: ' + content);
-    //use this to sign into any dglux page
-    // page.evaluate(function(){
-    //   var user = document.getElementById('username');
-    //   user.value = 'dgSuper';
-    //   var pass = document.getElementById('password');
-    //   pass.value = 'dglux1234';
-    //   var button = document.getElementById('submitButton');
-    //   button.click();
-    //   var styleSheet = document.styleSheets;
-    //   for(var i in styleSheets){
-    //     console.log('Sheet ' + i + styleSheets[i].href);
-    //   }
-    // });
-    // window.setTimeout(function(){ //don't need this if not authenticating
-      // if(stylePaths.length !== 0){
-      //   page.evaluate(function(){
-      //     //this doesn't recognize the function declared at the top of the file
-      //     addCSSToPage(stylePaths);
-      //   });
-      //   console.log('Added CSS Local Paths');
-      // }
+
+
       time = new Date().getSeconds();
       console.log('Step Two - Put Your Junk In That Box')
       console.log('   Time: ', time)
@@ -220,7 +174,7 @@ phantom.addCookie({
       //   page.render(system.args[2]);
       //   phantom.exit();
       // }, 2000);
-    // }, 2000); // this is the end of the auth setTimeout
+
   }else{
     // TODO need to handle status errors
     console.log('Something went wrong, returning status of ' + status);
@@ -228,3 +182,48 @@ phantom.addCookie({
 });
 
 
+/*
+phantom.addCookie({
+  'name': '_ga',
+  'value':'GA1.2.1150521923.1461282723',
+  'domain':'.controlco.com',
+  'path': '/',
+  'httponly': true,
+  'secure': false,
+  'expires': (new Date()).getTime() + (1000 * 60 * 60)
+});
+
+phantom.addCookie({
+  'name': 'niagara_session',
+  'value':'s83fa9c59760587c59b68f093d2ad06bcfff3bcac4d3fca91e4',
+  'domain':'host1.controlco.com',
+  'path': '/',
+  'httponly': true,
+  'secure': false,
+  'expires': (new Date()).getTime() + (1000 * 60 * 60)
+});
+*/
+    // console.log('Content: ' + content);
+    //use this to sign into any dglux page
+    // page.evaluate(function(){
+    //   var user = document.getElementById('username');
+    //   user.value = 'dgSuper';
+    //   var pass = document.getElementById('password');
+    //   pass.value = 'dglux1234';
+    //   var button = document.getElementById('submitButton');
+    //   button.click();
+    //   var styleSheet = document.styleSheets;
+    //   for(var i in styleSheets){
+    //     console.log('Sheet ' + i + styleSheets[i].href);
+    //   }
+    // });
+
+        // window.setTimeout(function(){ //don't need this if not authenticating
+      // if(stylePaths.length !== 0){
+      //   page.evaluate(function(){
+      //     //this doesn't recognize the function declared at the top of the file
+      //     addCSSToPage(stylePaths);
+      //   });
+      //   console.log('Added CSS Local Paths');
+      // }
+          // }, 2000); // this is the end of the auth setTimeout

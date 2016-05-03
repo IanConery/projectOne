@@ -12,8 +12,11 @@
 
 .dgLabel{
   display: -webkit-flex;
+  display: flex; /*added*/
   -webkit-align-items:center;
+  align-items: center;/*added*/
   -webkit-justify-content:right;
+  justify-content: right;/*added*/
 }
 
 /*from view*/
@@ -32,11 +35,12 @@ div.horizontal{
   /*align-content: flex-start;*/
   /*flex-wrap: wrap;*/
   /*display: -webkit-flexbox;*/
+  display: -webkit-flex;/*added*/
   display: flex;
   flex-direction: row;
 
-  align-content:flex-start;
   -webkit-align-content:flex-start;
+  align-content:flex-start;/*moved down*/
 }
 
 div.horizontal > div, div.horizontal > svg{
