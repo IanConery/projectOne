@@ -1,4 +1,4 @@
-* {
+/* * {
     border-width: 0px;
     justify-content: flex-start;
     align-items: center;
@@ -7,7 +7,7 @@
     overflow: hidden;
     z-index: 3;
 }
-
+ */
 /*from component*/
 
 .dgLabel{

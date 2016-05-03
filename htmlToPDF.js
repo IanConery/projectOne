@@ -72,11 +72,20 @@ page.onResourceTimeout = function(request) {
 
 /*************************************** End Page Error Handling ********************************************/
 
+page.onLoadFinished = function(){
+  window.setTimeout(function(){
+    time = new Date().getSeconds();
+    console.log('Finished');
+    console.log('   Time: ', time);
+    page.render(system.args[2]);
+    phantom.exit();
+  },2000);
+};
+
+
 
 // change the paper size to A3 or Tabloid as Letter doesn't work, add small margins otherwise the content is cut off
 page.open(system.args[1], function (status) {
-  console.log('CSS File Names ', styles);
-  console.log('Font File Names ', fonts);
   console.log('Status ' + status);
   if(status === 'success'){
     page.evaluate(function(){
@@ -96,10 +105,7 @@ page.open(system.args[1], function (status) {
           })
       }
     };
-    window.setTimeout(function(){
-      page.render(system.args[2]);
-      phantom.exit();
-    }, 2000);
+
   }else{
     // TODO need to handle status errors
     console.log('Something went wrong, returning status of ' + status);

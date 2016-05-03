@@ -107,6 +107,21 @@ page.onResourceTimeout = function(request) {
 //   console.log('Now loading a new page...');
 // };
 
+page.onLoadFinished = function(){
+  time = new Date().getSeconds();
+  console.log('Before timeout')
+  console.log('   Time: ', time)
+  page.render(system.args[2]);
+
+  window.setTimeout(function(){
+    time = new Date().getSeconds();
+    console.log('After timeout');
+    console.log('   Time: ', time);
+    page.render('afterTime.pdf');
+    phantom.exit();
+  },5000);
+};
+
 
 // change the paper size to A3 or Tabloid as Letter doesn't work, add small margins otherwise the content is cut off
 //TODO add a header if needed
@@ -138,7 +153,7 @@ phantom.addCookie({
 
   //this log is purely for me for now
   console.log('Status ' + status);
-    page.evaluate(function(){
+/*    page.evaluate(function(){
     var path = 'file:\\C:\\Users\\Ian\\Desktop\\projectOne\\ownCSS.css';
     var head = document.head;
     var element = document.createElement('link');
@@ -146,7 +161,7 @@ phantom.addCookie({
     element.rel = 'stylesheet';
     element.href = path;
     head.appendChild(element);
-  });
+  });*/
   if(status === 'success'){
     time = new Date().getSeconds();
     console.log('Step One - Cut A Hole In The Box')
@@ -196,15 +211,15 @@ phantom.addCookie({
             })
         }
       };
-      console.log(styles);
-      console.log(fonts);
-      window.setTimeout(function(){
-        time = new Date().getSeconds();
-        console.log('Step Three - And Thats How You Do It')
-        console.log('   Time: ', time)
-        page.render(system.args[2]);
-        phantom.exit();
-      }, 2000);
+      // console.log(styles);
+      // console.log(fonts);
+      // window.setTimeout(function(){
+      //   time = new Date().getSeconds();
+      //   console.log('Step Three - And Thats How You Do It')
+      //   console.log('   Time: ', time)
+      //   page.render(system.args[2]);
+      //   phantom.exit();
+      // }, 2000);
     // }, 2000); // this is the end of the auth setTimeout
   }else{
     // TODO need to handle status errors
