@@ -10,22 +10,19 @@ var meters = data.responses[0].response.success.Meters;
 $(document).ready(function(){
   var meterCount = meters.length;
   //fill out account info
-  $('#account-name').html('Account Name: ' + invoice.building.buildingDisplayName);
-  $('#address').html('Address: ' + invoice.building.addresss1);
-  $('#contract-plan').html('Contract Plan Type: ' + 'Flat Rate');
-  $('#date').html('Invoice Date: ' + invoice.dateGenerated);
-  $('#invoice-number').html('Invoice Number: ' + invoice.invoiceNumber);
+  $('#invoice-data').append('<div class="row"><div class="col-md-6">Account Name: ' + invoice.building.buildingDisplayName + '<br> Address: ' + invoice.building.addresss1 + '<br> Contract Plan Type: Flat Rate</div><div class="col-md-6">Invoice Date: ' + invoice.dateGenerated + '<br> Invoice Number: ' + invoice.invoiceNumber + '</div></div>')
   //end account info
 
   //populate utility details
   for(var i = 0; i < utility.length; i++){
     var cur = utility[i]
-    $('#utility-details').append("<div><b>Meter " + (i + 1) + ":</b> Meter Name: " + cur.utilityMeterName + " Meter Number: " + cur.utilityMeterNumber + " Usage: " + cur.utilityBillUsage + "kWh Peak Demand: " + cur.utilityBillDemandKw + "kWh </div>");
+    $('#utility-details').append("<div class='inner-utility'><b>Meter " + (i + 1) + ":</b><br> Meter Name: " + cur.utilityMeterName + "<br> Meter Number: " + cur.utilityMeterNumber + "<br> Usage: " + cur.utilityBillUsage + "kWh<br> Peak Demand: " + cur.utilityBillDemandKw + "kWh </div>");
   }
   //end utility details
 
   //populate current usage
-  $('#current-usage').append('<table class="table"><thead><tr><th>Meter Count</th><th>Billing Days</th><th>Billing Period</th><th>Usage (kWh)</th><th>Peak Demand (kW)</th></tr></thead><td>' + meters.length + '</td><td>' + 28 + '</td><td>' + invoice.end + '</td><td>' + invoice.tenantEnergyUsage + '</td><td>' + invoice.tenantPeakKw + '</td></table>')
+  $('#current-usage').append('<table class="table usage-table"><thead><tr><th>Meter Count</th><th>Billing Days</th><th>Billing Period</th><th>Usage (kWh)</th><th>Peak Demand (kW)</th></tr></thead><td>' + meters.length + '</td><td>' + 28 + '</td><td>' + invoice.end + '</td><td>' + invoice.tenantEnergyUsage + '</td><td>' + invoice.tenantPeakKw + '</td></table>');
+  // $('#current-usage').append('<div class="row"><div class="col-md-1"><div>Meter Count</div><div>' + meterCount + '</div></div><div class="col-md-1"></div><div class="col-md-1"></div><div class="col-md-1"></div><div class="col-md-1"></div></div>');
   //end current usage
 
   //populate meter details

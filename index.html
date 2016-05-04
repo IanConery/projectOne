@@ -16,37 +16,40 @@
 </head>
 <body>
 <!-- main div -->
-  <div id="main">
-    <div id="header"><b>Energy Usage Invoice</b></div>
+  <div id="main" class="container">
+  <!-- change to container to have padding left and right -->
+    <div class="row">
+      <div id="header"><b>Energy Usage Invoice</b></div>
 
-    <!-- account info div -->
-    <div id="invoice-data">
-      <div id="account-name"></div>
-      <div id="address"></div>
-      <div id="contract-plan"></div>
-      <div id="date"></div>
-      <div id="invoice-number"></div>
-    </div>
-    <!-- end account info div -->
+      <div class="col-md-8">
+        <!-- account info div -->
+        <div id="invoice-data" class="inner-data">
 
-    <!-- utility details side bar -->
-    <div id="utility-details">
-      <div class="sub-heading">Utility Details</div>
-    </div>
-    <!-- end utility details side bar -->
+        </div>
+        <!-- end account info div -->
 
-    <!-- current usage -->
-    <div id="current-usage">
-      <div class="sub-heading">Current Usage</div>
-    </div>
-    <!-- end current usage -->
+        <!-- current usage -->
+        <div id="current-usage" class="img-rounded">
+          <div class="sub-heading">Current Usage</div>
+        </div>
+        <!-- end current usage -->
 
-    <!-- current charges -->
-    <div id="current-charges">
-      <div class="sub-heading">Current Charges</div>
-      <div id="">to be filled dynamically</div>
+        <!-- current charges -->
+        <div id="current-charges" class="img-rounded">
+          <div class="sub-heading">Current Charges</div>
+        </div>
+        <!-- end current charges -->
+      </div>
+      
+      <div class="col-md-4">
+        <!-- utility details side bar -->
+        <div id="utility-details" class="img-rounded">
+          <div class="sub-heading util-det text-nowrap">Utility Details</div>
+        </div>
+        <!-- end utility details side bar -->
+      </div>
+
     </div>
-    <!-- end current charges -->
 
     <!-- summary information -->
     <div id="summary-information">

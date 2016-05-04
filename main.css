@@ -1,13 +1,56 @@
 .sub-heading {
   font-size: 18pt;
-  font-weight: bold;
-  background: lightblue;
+  /*font-weight: bold;*/
+  color: white;
+  background: #00669a;
+  padding:5px 15px 5px 15px;
+  width: 35%;
+  position: relative;
+  left: -15px;
+  top: -20px;
 }
 
 #header {
   font-size: 24pt;
 }
 
-#main {
-  padding: 20px;
+.util-det {
+	width: 55%;
+	background: #575958;
+}
+
+#utility-details {
+	background: #f1f2f2;
+	border: 2px solid black;
+	/*padding: 7px;*/
+	height: calc(100%);
+}
+
+.inner-utility {
+	padding: 0 0 10px 10px;
+	margin: 5px;
+}
+
+.inner-data {
+	position: relative;
+	margin: 10px 5px 20px 0px;
+	padding: 0px 20px 20px 0px;
+}
+
+#current-usage {
+	background: #e2ecf1;
+	border: 2px solid #00669a;
+	margin: 10px 5px 10px 0px;
+	padding: 0px 20px 5px 0px;
+}
+
+.usage-table {
+	margin: 0 10px;
+}
+
+#current-charges {
+	background: #e2ecf1;
+	border: 2px solid #00669a;
+	margin: 40px 5px 10px 0px;
+	padding: 0px 20px 5px 0px;
 }
