@@ -1,0 +1,13 @@
+.sub-heading {
+  font-size: 18pt;
+  font-weight: bold;
+  background: lightblue;
+}
+
+#header {
+  font-size: 24pt;
+}
+
+#main {
+  padding: 20px;
+}
