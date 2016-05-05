@@ -14,10 +14,10 @@ var system = require('system');
 //invoiceNumber will be populated dynamicaly later, also need to add the 'title' dynamicaly
 var invoiceNumber = system.args[3] || '00012(temp)';
 
-var time = new Date().getSeconds();
+
 
 // var styles = ['_styles', 'app', 'app_icons', 'block_icons', 'charts', 'colored_icons', 'component', 'dglux', 'dock-manager', 'editor', 'fonts', 'grid', 'loader', 'style', 'tree', 'view'];
-console.log(time);
+
 
 // var stylePaths = [];
 
@@ -38,18 +38,18 @@ page.onResourceRequested = function(data, request){
       var fileName = /\/(\w+)\.css/gi.exec(data['url'])[1];
       styles.push(fileName);
       console.log('Skipping CSS', data['url']);
-      // if(fileName !== 'loader'){
+      if(fileName !== 'loader'){
       // if(fileName === 'view' || fileName === 'component'){
-      //   page.evaluate(function(fileName){
-      //     var path = 'file:\\C:\\Users\\Ian\\Desktop\\Styles\\';
-      //     var head = document.head;
-      //     var element = document.createElement('link');
-      //     element.type = 'text/css';
-      //     element.rel = 'stylesheet';
-      //     element.href = path + fileName + '.css';
-      //     head.appendChild(element);
-      //   },fileName);
-      // }
+        page.evaluate(function(fileName){
+          var path = 'file:\\C:\\Users\\Ian\\Desktop\\Styles\\';
+          var head = document.head;
+          var element = document.createElement('link');
+          element.type = 'text/css';
+          element.rel = 'stylesheet';
+          element.href = path + fileName + '.css';
+          head.appendChild(element);
+        },fileName);
+      }
       request.abort();
     //Block all ttf requests
     }else if((/http:\/\/.+?\.ttf$/gi).test(data['url'])){
@@ -109,12 +109,9 @@ page.onResourceTimeout = function(request) {
 
 page.onLoadFinished = function(){
   window.setTimeout(function(){
-    time = new Date().getSeconds();
-    console.log('Finished');
-    console.log('   Time: ', time);
     page.render(system.args[2]);
     phantom.exit();
-  },2000);
+  },1000);
 };
 
 
@@ -127,25 +124,20 @@ page.open(system.args[1], function (status) {
 
   //this log is purely for me for now
   console.log('Status ' + status);
-    page.evaluate(function(){
-    var path = 'file:\\C:\\Users\\Ian\\Desktop\\projectOne\\ownCSS.css';
-    var head = document.head;
-    var element = document.createElement('link');
-    element.type = 'text/css';
-    element.rel = 'stylesheet';
-    element.href = path;
-    head.appendChild(element);
-  });
+  //   page.evaluate(function(){
+  //   var path = 'file:\\C:\\Users\\Ian\\Desktop\\projectOne\\ownCSS.css';
+  //   var head = document.head;
+  //   var element = document.createElement('link');
+  //   element.type = 'text/css';
+  //   element.rel = 'stylesheet';
+  //   element.href = path;
+  //   head.appendChild(element);
+  // });
   if(status === 'success'){
-    time = new Date().getSeconds();
-    console.log('Step One - Cut A Hole In The Box')
-    console.log('   Time: ', time)
     var content = page.content;
 
 
-      time = new Date().getSeconds();
-      console.log('Step Two - Put Your Junk In That Box')
-      console.log('   Time: ', time)
+
       var title = page.evaluate(function(){
         //.bgColor sets the background to white instead of the defaul transparent
         // document.body.bgColor = 'white';// removed for now as I don't see a difference
