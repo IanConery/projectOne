@@ -64,8 +64,11 @@ $(document).ready(function(){
   for(var i = 0; i < meterCount; i++){
     var  cur = meters[i];
     var total = cur.serviceCharge + cur.demandCharge + cur.generationCharge;
-    // $('#meter-details').append("<div> Meter Name: " + cur.meterName + ", Description: " + cur.meterDescription.split('/')[0] + ", Peak Demand" + cur.peakDemand + "</div>");
-    $('#meter-details').append('<div class="row inner-meter"><div class="col-md-2"><b>Meter ' + (i + 1) + ':</b><br>Meter Name:<br>Description:<br>Peak Demand:<br>Peak Time:<br>Start:<br>End:</div><div class="col-md-5"><br>' + cur.meterName + '<br>' + cur.meterDescription + '<br>' + cur.peakDemand + 'kW<br>' + cur.peakTime + '<br>' + cur.startTime + '<br>  ' + cur.startValue + '<br>' + cur.endTime + '<br>  ' + cur.endValue + '</div><div class="col-md-3"><br>Service Charge (' + cur.svcProvider + '): <br>' + dollarFormat(cur.usage) + 'kWh @ $' + fourDeci(cur.serviceRate) + '<br><br>Demand Charge (' + cur.svcProvider + '):<br>' + dollarFormat(cur.peakDemand) + 'kW @ $' + fourDeci(cur.demandRate) + '<br><br>Generation Charge (' + cur.genProvider + '):<br>' + dollarFormat(cur.usage) + 'kWh @ $' + fourDeci(cur.generationRate) + '<br><br><b>Total: </b></div><div class="col-md-2"><br><b>$' + dollarFormat(cur.serviceCharge) + '</b><br><br><br><b>$' + dollarFormat(cur.demandCharge) + '</b><br><br><br><b>$' + dollarFormat(cur.generationCharge) + '</b><br><br><br><b>' + dollarFormat(total) + '</b></div></div>');
+
+    $('#meter-details').append('<div class="row inner-meter"><div class="col-md-2"><b>Meter ' + (i + 1) + ':</b><br>Meter Name:<br>Description:<br>Peak Demand:<br>Peak Time:<br>Start:<br>End:</div><div class="col-md-5"><br>' + cur.meterName + '<br>' + cur.meterDescription + '<br>' + cur.peakDemand + 'kW<br>' + cur.peakTime + '<br>' + cur.startTime + '<br>  ' + cur.startValue + '<br>' + cur.endTime + '<br>  ' + cur.endValue + '</div><div class="col-md-3"><br>Service Charge (' + cur.svcProvider + '): <br>' + dollarFormat(cur.usage) + 'kWh @ $' + fourDeci(cur.serviceRate) + '<br><br>Demand Charge (' + cur.svcProvider + '):<br>' + dollarFormat(cur.peakDemand) + 'kW @ $' + fourDeci(cur.demandRate) + '<br><br>Generation Charge (' + cur.genProvider + '):<br>' + dollarFormat(cur.usage) + 'kWh @ $' + fourDeci(cur.generationRate) + '<br><br><b>Total: </b></div><div class="col-md-2"><br><b>$' + dollarFormat(cur.serviceCharge) + '</b><br><br><br><b>$' + dollarFormat(cur.demandCharge) + '</b><br><br><br><b>$' + dollarFormat(cur.generationCharge) + '</b><br><br><br><b>$' + dollarFormat(total) + '</b></div></div>');
+    if((i + 1 ) % 4 === 0){
+
+    }
   }
   //end meter details
 });
