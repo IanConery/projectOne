@@ -4,20 +4,65 @@ var data = {"responses":[{"response":{"success":{"UtilityBills":[{"utilityMeterN
 var dollarFormat = function(num){
   num = Math.round(num * 100) / 100;
   var string = num.toString().split('.');
-  var dollars = string[0].split('').reverse();
+  var dollars = string[0].split('').reverse().join('');
   var cents = string[1];
-  var count = 0;
-  return num;
+  var arr = [];
+  if(!cents || cents.length === 0){
+    cents = '00'
+  }
+  for(var i = 0; i < dollars.length; i++){
+    arr.push(dollars[i]);
+    if((i + 1) % 3 === 0 && i !== dollars.length - 1){
+      arr.push(',');
+    }
+  }
+  dollars = arr.reverse().join('');
+  return dollars + '.' + cents;
+};
+
+
+var months = {
+  1 : 'Jan',
+  2 : 'Feb',
+  3 : 'Mar',
+  4 : 'Apr',
+  5 : 'May',
+  6 : 'Jun',
+  7 : 'Jul',
+  8 : 'Aug',
+  9 : 'Sep',
+  10 : 'Oct',
+  11 : 'Nov',
+  12 : 'Dec'
+}
+
+var dateFormat = function(date){
+  date = date.split('-');
+  var year = date[0];
+  var month = date[1];
+  var day = date[2].substring(0,2);
+  return day + ' ' + months[month] + ' ' + year;
 };
 
 var fourDeci = function(num){
-  return Math.round(num * 10000) / 10000;
+  num = Math.round(num * 10000) / 10000;
+  var str = num.toString().split('.');
+  var wholeNum = str[0].split('').reverse().join('');
+  var decimal = str[1];
+  if(!decimal || decimal.length === 0){
+    decimal = '00'
+  }
+  var arr = [];
+  for(var i = 0; i < wholeNum.length; i++){
+    arr.push(wholeNum[i]);
+      if((i + 1) % 3 === 0 && i !== wholeNum.length - 1){
+        arr.push(',');
+      }
+  }
+  wholeNum = arr.reverse().join('');
+  return wholeNum + '.' + decimal;
 };
 
-var utilNumber = function(str){
-  str = str.replace(/meter/gi,'');
-  return str;
-};
 
 var invoice = data.responses[0].response.success.Invoice;
 //below returns an array of objects
@@ -28,47 +73,59 @@ var meters = data.responses[0].response.success.Meters;
 var summaryUtil = '';
 for(var i = 0; i < utility.length; i++){
   if(i === utility.length - 1){
-    summaryUtil += utilNumber(utility[i].utilityMeterName);
+    summaryUtil += utility[i].utilityMeterNumber;
   }else{
-    summaryUtil += utilNumber(utility[i].utilityMeterName) + ', ';
+    summaryUtil += utility[i].utilityMeterNumber + ', ';
   }
 }
 
 $(document).ready(function(){
   var meterCount = meters.length;
   //fill out account info
-  $('#invoice-data').append('<div class="row"><div class="col-md-6">Account Name: ' + invoice.building.buildingDisplayName + '<br> Address: ' + invoice.building.addresss1 + '<br> Contract Plan Type: Flat Rate</div><div class="col-md-6">Invoice Date: ' + invoice.dateGenerated + '<br> Invoice Number: ' + invoice.invoiceNumber + '</div></div>')
+  $('#invoice-data').append('<table class="table"><tbody><tr><td>Account Name: </td><td>' + invoice.building.buildingDisplayName + '</td><td>Invoice Date: </td><td>' + dateFormat(invoice.dateGenerated) + '</td></tr><tr><td>Address: </td><td>' + invoice.building.addresss1 + '</td><td>Invoice Number: </td><td>' + invoice.invoiceNumber + '</td></tr><tr><td>Contract Plan Type: </td><td>Flat Rate</td></tr></tbody></table>');
   //end account info
 
   //populate utility details
   for(var i = 0; i < utility.length; i++){
     var cur = utility[i]
-    $('#utility-details').append("<div class='inner-utility'><b>Meter " + (i + 1) + ":</b><br> Meter Name: " + cur.utilityMeterName + "<br> Meter Number: " + cur.utilityMeterNumber + "<br> Usage: " + cur.utilityBillUsage + "kWh<br> Peak Demand: " + cur.utilityBillDemandKw + "kWh </div>");
+    $('#utility-details').append("<div class='inner-utility'><b>Meter " + (i + 1) + ":</b><br> Meter Name: " + cur.utilityMeterName + "<br> Meter Number: " + cur.utilityMeterNumber + "<br> Usage: " + fourDeci(cur.utilityBillUsage) + "kWh<br> Peak Demand: " + fourDeci(cur.utilityBillDemandKw) + "kWh </div>");
   }
   //end utility details
 
   //populate current usage
-  $('#current-usage').append('<table class="table usage-table"><thead><tr><th>Meter Count</th><th>Billing Days</th><th>Billing Period</th><th>Usage (kWh)</th><th>Peak Demand (kW)</th></tr></thead><td>' + meters.length + '</td><td>' + 28 + '</td><td>' + invoice.end + '</td><td>' + invoice.tenantEnergyUsage + '</td><td>' + invoice.tenantPeakKw + '</td></table>');
-  // $('#current-usage').append('<div class="row"><div class="col-md-1"><div>Meter Count</div><div>' + meterCount + '</div></div><div class="col-md-1"></div><div class="col-md-1"></div><div class="col-md-1"></div><div class="col-md-1"></div></div>');
+  $('#current-usage').append('<table class="table usage-table"><thead><tr><th>Meter Count</th><th>Billing Days</th><th>Billing Period</th><th>Usage (kWh)</th><th>Peak Demand (kW)</th></tr></thead><td class="text-center">' + meters.length + '</td><td class="text-center">' + invoice.billingDays + '</td><td>' + dateFormat(invoice.end) + '</td><td>' + fourDeci(invoice.tenantEnergyUsage) + '</td><td>' + fourDeci(invoice.tenantPeakKw) + '</td></table>');
   //end current usage
 
   //populate current charges
-  $('#current-charges').append('<div class="row inner-charges"><div class="col-md-6"><b>Current Charges</b><br>Service Charge<br>Demand Charge<br>Generation Charge<br><b>Total Current Charges</b></div><div class="col-md-2"><b>Start Date</b><br>' + invoice.start + '</div><div class="col-md-2"><b>End Date</b><br>' + invoice.end + '</div><div class="col-md-2"><b>Total</b><br>' + dollarFormat(invoice.serviceCharge) + '<br>' + dollarFormat(invoice.demandCharge) + '<br>' + dollarFormat(invoice.generationCharge) + '<br><b>' + dollarFormat(invoice.invoiceTotal) + '</b></div></div>')
+
+  $('#current-charges').append('<table class="table usage-table"><thead><tr><th>Current Charges</th><th>Start Date</th><th>End Date</th><th>Total</th></tr></thead><tbody><tr><td>Service Charge</td><td>' + invoice.start + '</td><td>' + invoice.end + '</td><td>$' + dollarFormat(invoice.serviceCharge) + '</td></tr><tr><td>Demand Charge</td><td></td><td></td><td>$' + dollarFormat(invoice.demandCharge) + '</td></tr><tr><td>Generation Charge</td><td></td><td></td><td>$' + dollarFormat(invoice.generationCharge) + '</td></tr><tr><th>Total Current Charges</th><td></td><td></td><th>$' + dollarFormat(invoice.invoiceTotal) + '</th></tr></tbody></table>');
+
   //end current charges
 
   //populate summary information
-  $('#summary-information').append('<div class="row inner-summary"><div class="col-md-7"></div><div class="col-md-5"><b>Bill Summary:</b><br>Account Name: ' + invoice.building.buildingDisplayName + '<br>Invoice Number: ' + invoice.invoiceNumber + '<br>Utility Numbers: ' + summaryUtil + '<br>Current Charges: ' + dollarFormat(invoice.invoiceTotal) + '<br>Invoice created using: tenant eye</div></div>');
+  $('#summary-information').append('<div class="row inner-summary"><div class="col-md-7"></div><div class="col-md-5"><b>Bill Summary:</b><br>Account Name: ' + invoice.building.buildingDisplayName + '<br>Invoice Number: ' + invoice.invoiceNumber + '<br>Utility Numbers: ' + summaryUtil + '<br>Current Charges: $' + dollarFormat(invoice.invoiceTotal) + '<br>Invoice created using: <span class="tenant-eye">tenant <span class="red-font">eye</span></span></div></div>');
   //end summary information
 
   //populate meter details
+  var divs = 1;
   for(var i = 0; i < meterCount; i++){
     var  cur = meters[i];
     var total = cur.serviceCharge + cur.demandCharge + cur.generationCharge;
 
-    $('#meter-details').append('<div class="row inner-meter"><div class="col-md-2"><b>Meter ' + (i + 1) + ':</b><br>Meter Name:<br>Description:<br>Peak Demand:<br>Peak Time:<br>Start:<br>End:</div><div class="col-md-5"><br>' + cur.meterName + '<br>' + cur.meterDescription + '<br>' + cur.peakDemand + 'kW<br>' + cur.peakTime + '<br>' + cur.startTime + '<br>  ' + cur.startValue + '<br>' + cur.endTime + '<br>  ' + cur.endValue + '</div><div class="col-md-3"><br>Service Charge (' + cur.svcProvider + '): <br>' + dollarFormat(cur.usage) + 'kWh @ $' + fourDeci(cur.serviceRate) + '<br><br>Demand Charge (' + cur.svcProvider + '):<br>' + dollarFormat(cur.peakDemand) + 'kW @ $' + fourDeci(cur.demandRate) + '<br><br>Generation Charge (' + cur.genProvider + '):<br>' + dollarFormat(cur.usage) + 'kWh @ $' + fourDeci(cur.generationRate) + '<br><br><b>Total: </b></div><div class="col-md-2"><br><b>$' + dollarFormat(cur.serviceCharge) + '</b><br><br><br><b>$' + dollarFormat(cur.demandCharge) + '</b><br><br><br><b>$' + dollarFormat(cur.generationCharge) + '</b><br><br><br><b>$' + dollarFormat(total) + '</b></div></div>');
-    if((i + 1 ) % 4 === 0){
-
+    if(i === 0){
+      $('#meter-details').append('<div class="repeater img-rounded pagebreak"><div class="sub-heading gray-head special">Meter Details</div>');
     }
+
+    $('#meter-details > div:nth-child(' + divs + ')').append('<div class="row inner-meter"><div class="col-md-2"><b>Meter ' + (i + 1) + ':</b><br>Meter Name:<br>Description:<br>Peak Demand:<br>Peak Time:<br>Start:<br>End:</div><div class="col-md-5"><br>' + cur.meterName + '<br>' + cur.meterDescription + '<br>' + cur.peakDemand + 'kW<br>' + cur.peakTime + '<br>' + cur.startTime + '<br>  ' + cur.startValue + '<br>' + cur.endTime + '<br>  ' + cur.endValue + '</div><div class="col-md-3"><br>Service Charge (' + cur.svcProvider + '): <br>' + dollarFormat(cur.usage) + 'kWh @ $' + fourDeci(cur.serviceRate) + '<br><br>Demand Charge (' + cur.svcProvider + '):<br>' + dollarFormat(cur.peakDemand) + 'kW @ $' + fourDeci(cur.demandRate) + '<br><br>Generation Charge (' + cur.genProvider + '):<br>' + dollarFormat(cur.usage) + 'kWh @ $' + fourDeci(cur.generationRate) + '<br><br><b>Total: </b></div><div class="col-md-2"><br><b>$' + dollarFormat(cur.serviceCharge) + '</b><br><br><br><b>$' + dollarFormat(cur.demandCharge) + '</b><br><br><br><b>$' + dollarFormat(cur.generationCharge) + '</b><br><br><br><b>$' + dollarFormat(total) + '</b></div></div>');
+
+    if((i + 1 ) % 5 === 0 || i === meterCount - 1){
+      $('#meter-details').append('</div>');
+      if((i + 1) % 5 === 0){
+        $('#meter-details').append('<div class="repeater img-rounded pagebreak"><div class="sub-heading gray-head special">Meter Details</div>');
+      }
+      divs++;
+    }//end if
+
   }
   //end meter details
 });

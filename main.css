@@ -1,4 +1,9 @@
-@media all{*/
+@media all{
+
+  @font-face {
+    font-family: tenantEye;
+    src: url('../Styles/ufonts.com_nevis-bold');
+  }
 
   * {
     -webkit-box-sizing: border-box;
@@ -155,9 +160,9 @@
 
   .inner-data {
   	position: relative ;
-    line-height: 200% ;
-  	margin: 40px 5px 10px 0px ;
-  	padding: 0px 20px 20px 0px ;
+    line-height: 100% ;
+  	margin: 20px 0px;
+  	/*padding: 0px 20px 20px 0px ;*/
   }
 
   #current-usage {
@@ -168,7 +173,7 @@
   }
 
   .usage-table {
-  	margin: 0 10px ;
+  	margin: 0 10px 10px 10px;
   }
 
   #current-charges {
@@ -201,20 +206,37 @@
   }
 
   #meter-details {
-    margin: 40px 5px 10px 0px ;
-    background: #f1f2f2 ;
-    border: 2px solid black ;
-    padding: 0px 20px 20px 20px ;
-    line-height: 150%;
+
   }
 
   .inner-meter {
     margin: 10px 5px 5px 10px;
     border-bottom: 2px solid black;
-    padding: 30px 0px;
+    padding: 15px 0px;
   }
   .special {
     left: -35px;
     width: 27%;
+  }
+
+  .repeater {
+    margin: 40px 5px 10px 0px ;
+    background: #f1f2f2 ;
+    border: 2px solid black ;
+    padding: 0px 20px 10px 20px ;
+    line-height: 125%;
+  }
+
+  .pagebreak {
+    page-break-after: always;
+  }
+
+  .tenant-eye {
+    font-family: tenantEye;
+    font-size: 1.75em;
+  }
+
+  .red-font {
+    color: red;
   }
 }
