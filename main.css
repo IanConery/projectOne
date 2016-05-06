@@ -1,9 +1,15 @@
 @media all{
 
+/**************************** Fonts ********************************/
   @font-face {
     font-family: tenantEye;
     src: url('../Styles/ufonts.com_nevis-bold.ttf');
   }
+
+/************************ End Fonts ********************************/
+
+
+/**************** Phantom doesn't like external bootstrap *******************/
 
   * {
     -webkit-box-sizing: border-box;
@@ -126,6 +132,22 @@
     margin-left: auto;
   }
 
+  .img-rounded {
+    border-radius: 6px;
+  }
+
+
+
+/********************* End Bootstrap Fill ************************/
+
+
+
+/************************ Headings ***************************************/
+
+  #header {
+    font-size: 24pt ;
+  }
+
   .sub-heading {
     font-size: 18pt ;
     /*font-weight: bold;*/
@@ -138,53 +160,83 @@
     top: -20px ;
   }
 
-  #header {
-    font-size: 24pt ;
+  .gray-head {
+    width: 26% ;
+    background: #575958;
+    padding: 15px 0px 15px 15px;
+  }
+
+/*This is added to a special div that feels the .sub-heading class rules don't apply to it*/
+  .special {
+    left: -35px;
+    width: 27%;
+    height: 52.25px;
+  }
+
+
+
+/************************ End Headings ***********************************/
+
+
+/************************ Utility Details ********************************/
+
+  #utility-details {
+    background: #f1f2f2 ;
+    border: 2px solid black ;
+    margin: 40px 5px 10px 0px ;
+    min-height: 850px;
   }
 
   .util-det {
-  	width: 55% ;
-  	background: #575958 ;
+    width: 55% ;
+    background: #575958 ;
   }
 
-  #utility-details {
-  	background: #f1f2f2 ;
-  	border: 2px solid black ;
-    margin: 40px 5px 10px 0px ;
-    height: 100%;
-  }
   .inner-utility {
-  	padding: 0 0 50px 10px ;
-  	margin: 0px 15px 20px 15px;
+    padding: 0 0 50px 10px ;
+    margin: 0px 15px 20px 15px;
     line-height: 40%
   }
 
+/*********************End Utility Details ********************************/
+
+
+/************************ Account Details ********************************/
+
   .inner-data {
-  	position: relative ;
+    position: relative ;
     line-height: 100% ;
-  	margin: 20px 0px;
-  	/*padding: 0px 20px 20px 0px ;*/
+    margin: 20px 0px;
+    /*padding: 0px 20px 20px 0px ;*/
   }
 
+/******************** End Account Details ********************************/
+
+
+/**************************** Current Usage ******************************/
+
   #current-usage {
-  	background: #e2ecf1 ;
-  	border: 2px solid #00669a ;
-  	margin: 40px 5px 10px 0px ;
-  	padding: 0px 20px 5px 0px ;
+    background: #e2ecf1 ;
+    border: 2px solid #00669a ;
+    margin: 40px 5px 10px 0px ;
+    padding: 0px 20px 5px 0px ;
   }
 
   .usage-table {
-  	margin: 0 10px 10px 10px;
+    margin: 0 10px 10px 10px;
   }
 
+
+/**************************** Current Usage ******************************/
+
+
+/**************************** Current Charges ****************************/
+
   #current-charges {
-  	background: #e2ecf1 ;
-  	border: 2px solid #00669a ;
-  	margin: 40px 5px 10px 0px ;
-  	padding: 0px 20px 5px 0px ;
-  }
-  .img-rounded {
-    border-radius: 6px;
+    background: #e2ecf1 ;
+    border: 2px solid #00669a ;
+    margin: 40px 5px 10px 0px ;
+    padding: 0px 20px 5px 0px ;
   }
 
   .inner-charges {
@@ -192,11 +244,10 @@
     line-height: 200%;
   }
 
-  .gray-head {
-    width: 26% ;
-    background: #575958;
-    padding: 15px 0px 15px 15px;
-  }
+/**************************** End Current Charges ************************/
+
+
+/**************************** Summary Info *******************************/
 
   #summary-information {
     margin: 40px 5px 10px 0px ;
@@ -206,8 +257,16 @@
     line-height: 150%;
   }
 
-  #meter-details {
+/**************************** End Summary Info ***************************/
 
+
+/**************************** Meter Details ******************************/
+
+  .repeater {
+    margin: 30px 5px 10px 0px ;
+    background: #f1f2f2 ;
+    border: 2px solid black ;
+    padding: 0px 20px 10px 20px ;
   }
 
   .inner-meter {
@@ -217,37 +276,9 @@
     line-height: 175%;
   }
 
-  .last-row {
-    border-bottom: 0px;
-  }
+/**************************** End Meter Details **************************/
 
-  .special {
-    left: -35px;
-    width: 27%;
-    height: 52.25px;
-  }
-
-  .repeater {
-    margin: 30px 5px 10px 0px ;
-    background: #f1f2f2 ;
-    border: 2px solid black ;
-    padding: 0px 20px 10px 20px ;
-  }
-
-  .pagebreak {
-    page-break-after: always;
-  }
-
-  .tenant-eye {
-    font-family: tenantEye;
-    font-size: 1.75em;
-    position: relative;
-    top: -10px;
-  }
-
-  .red-font {
-    color: red;
-  }
+/**************************** Table styles *******************************/
 
   .table-noborder > thead > tr > th {
     vertical-align: bottom;
@@ -270,4 +301,58 @@
     width: calc(15%);
   }
 
+/**************************** End Table styles ***************************/
+
+  .last-row {
+    border-bottom: 0px;
+  }
+
+  .pagebreak {
+    page-break-after: always;
+  }
+
+  .tenant-eye {
+    font-family: tenantEye;
+    font-size: 1.75em;
+    position: relative;
+    top: -10px;
+  }
+
+  .red-font {
+    color: red;
+  }
+
+  .pagefill {
+    min-height: 950px;
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
