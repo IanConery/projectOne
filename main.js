@@ -103,7 +103,7 @@ $(document).ready(function(){
   //end current charges
 
   //populate summary information
-  $('#summary-information').append('<div class="row inner-summary"><div class="col-md-7"></div><div class="col-md-5"><b>Bill Summary:</b><br>Account Name: ' + invoice.building.buildingDisplayName + '<br>Invoice Number: ' + invoice.invoiceNumber + '<br>Utility Numbers: ' + summaryUtil + '<br>Current Charges: $' + dollarFormat(invoice.invoiceTotal) + '<br>Invoice created using: <span class="tenant-eye">tenant <span class="red-font">eye</span></span></div></div>');
+  $('#summary-information').append('<div class="row inner-summary"><div class="col-md-7"></div><div class="col-md-5"><table><thead><tr><th>Bill Summary:</th></tr></thead><tbody><tr><td>Account Name: </td><td>' + invoice.building.buildingDisplayName + '</td></tr><tr><td>Invoice Number:</td><td>' + invoice.invoiceNumber + '</td></tr><tr></td><td>Utility Numbers:</td><td>' + summaryUtil + '</td></tr><tr><td>Current Charges:</td><td>$' + dollarFormat(invoice.invoiceTotal) + '</td></tr><tr><td>Invoice created using:</td><td> <span class="tenant-eye">tenant <span class="red-font">eye</span></span></td></tr></tbody></table></div></div>');
   //end summary information
 
   //populate meter details
