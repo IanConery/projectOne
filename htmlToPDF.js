@@ -1,5 +1,5 @@
 //This file contains phantomjs code and needs to run as such see the documentation at http://phantomjs.org/
-//<--- USAGE ---> phantomjs htmlToPDF.js [url or file path] [destination file .pdf] [invoiceNumber] []
+//<--- USAGE ---> phantomjs htmlToPDF.js [url or file path] [destination file .pdf] [invoice number] [account name]
 
 /******** This is fill to prevent a bug from occuring **********************************************************/
 RegExp.prototype.test = function(str){
