@@ -88,7 +88,8 @@ $(document).ready(function(){
   //populate utility details
   for(var i = 0; i < utility.length; i++){
     var cur = utility[i]
-    $('#utility-details').append("<div class='inner-utility'><b>Meter " + (i + 1) + ":</b><br> Meter Name: " + cur.utilityMeterName + "<br> Meter Number: " + cur.utilityMeterNumber + "<br> Usage: " + fourDeci(cur.utilityBillUsage) + "kWh<br> Peak Demand: " + fourDeci(cur.utilityBillDemandKw) + "kWh </div>");
+    // $('#utility-details').append("<div class='inner-utility'><b>Meter " + (i + 1) + ":</b><br> Meter Name: " + cur.utilityMeterName + "<br> Meter Number: " + cur.utilityMeterNumber + "<br> Usage: " + fourDeci(cur.utilityBillUsage) + "kWh<br> Peak Demand: " + fourDeci(cur.utilityBillDemandKw) + "kWh </div>");
+    $('#utility-details').append('<table class="table table-noborder inner-utility"><thead><th>Meter: ' + (i + 1) + '</th></thead><tbody><tr><td>Meter Name:</td><td>' + cur.utilityMeterName + '</td></tr><tr><td>Meter Number:</td><td>' + cur.utilityMeterNumber + '</td></tr><tr><td>Usage:</td><td>' + fourDeci(cur.utilityBillUsage) + 'kWh</td></tr><tr><td>Peak Demand:</td><td>' + fourDeci(cur.utilityBillDemandKw) + 'kWh</td></tr></tbody></table>');
   }
   //end utility details
 
@@ -103,7 +104,7 @@ $(document).ready(function(){
   //end current charges
 
   //populate summary information
-  $('#summary-information').append('<div class="row inner-summary"><div class="col-md-7"></div><div class="col-md-5"><table><thead><tr><th>Bill Summary:</th></tr></thead><tbody><tr><td>Account Name: </td><td>' + invoice.building.buildingDisplayName + '</td></tr><tr><td>Invoice Number:</td><td>' + invoice.invoiceNumber + '</td></tr><tr></td><td>Utility Numbers:</td><td>' + summaryUtil + '</td></tr><tr><td>Current Charges:</td><td>$' + dollarFormat(invoice.invoiceTotal) + '</td></tr><tr><td>Invoice created using:</td><td> <span class="tenant-eye">tenant <span class="red-font">eye</span></span></td></tr></tbody></table></div></div>');
+  $('#summary-information').append('<div class="row inner-summary"><div class="col-md-7"></div><div class="col-md-5"><table class="table table-noborder inner-summary"><thead><tr><th>Bill Summary:</th></tr></thead><tbody><tr><td>Account Name: </td><td>' + invoice.building.buildingDisplayName + '</td></tr><tr><td>Invoice Number:</td><td>' + invoice.invoiceNumber + '</td></tr><tr></td><td>Utility Numbers:</td><td>' + summaryUtil + '</td></tr><tr><td>Current Charges:</td><td>$' + dollarFormat(invoice.invoiceTotal) + '</td></tr><tr><td>Invoice created using:</td><td> <span class="tenant-eye">tenant <span class="red-font">eye</span></span></td></tr></tbody></table></div></div>');
   //end summary information
 
   //populate meter details
@@ -111,16 +112,27 @@ $(document).ready(function(){
   for(var i = 0; i < meterCount; i++){
     var  cur = meters[i];
     var total = cur.serviceCharge + cur.demandCharge + cur.generationCharge;
+    var metersPerPage = 4;
 
     if(i === 0){
       $('#meter-details').append('<div class="repeater img-rounded pagebreak"><div class="sub-heading gray-head special">Meter Details</div>');
     }
 
-    $('#meter-details > div:nth-child(' + divs + ')').append('<div class="row inner-meter"><div class="col-md-2"><b>Meter ' + (i + 1) + ':</b><br>Meter Name:<br>Description:<br>Peak Demand:<br>Peak Time:<br>Start:<br>End:</div><div class="col-md-5"><br>' + cur.meterName + '<br>' + cur.meterDescription + '<br>' + cur.peakDemand + 'kW<br>' + cur.peakTime + '<br>' + cur.startTime + '<br>  ' + cur.startValue + '<br>' + cur.endTime + '<br>  ' + cur.endValue + '</div><div class="col-md-3"><br>Service Charge (' + cur.svcProvider + '): <br>' + dollarFormat(cur.usage) + 'kWh @ $' + fourDeci(cur.serviceRate) + '<br><br>Demand Charge (' + cur.svcProvider + '):<br>' + dollarFormat(cur.peakDemand) + 'kW @ $' + fourDeci(cur.demandRate) + '<br><br>Generation Charge (' + cur.genProvider + '):<br>' + dollarFormat(cur.usage) + 'kWh @ $' + fourDeci(cur.generationRate) + '<br><br><b>Total: </b></div><div class="col-md-2"><br><b>$' + dollarFormat(cur.serviceCharge) + '</b><br><br><br><b>$' + dollarFormat(cur.demandCharge) + '</b><br><br><br><b>$' + dollarFormat(cur.generationCharge) + '</b><br><br><br><b>$' + dollarFormat(total) + '</b></div></div>');
+    // $('#meter-details > div:nth-child(' + divs + ')').append('<div class="row inner-meter"><div class="col-md-2"><b>Meter ' + (i + 1) + ':</b><br>Meter Name:<br>Description:<br>Peak Demand:<br>Peak Time:<br>Start:<br>End:</div><div class="col-md-5"><br>' + cur.meterName + '<br>' + cur.meterDescription + '<br>' + cur.peakDemand + 'kW<br>' + cur.peakTime + '<br>' + cur.startTime + '<br>  ' + cur.startValue + '<br>' + cur.endTime + '<br>  ' + cur.endValue + '</div><div class="col-md-3"><br>Service Charge (' + cur.svcProvider + '): <br>' + dollarFormat(cur.usage) + 'kWh @ $' + fourDeci(cur.serviceRate) + '<br><br>Demand Charge (' + cur.svcProvider + '):<br>' + dollarFormat(cur.peakDemand) + 'kW @ $' + fourDeci(cur.demandRate) + '<br><br>Generation Charge (' + cur.genProvider + '):<br>' + dollarFormat(cur.usage) + 'kWh @ $' + fourDeci(cur.generationRate) + '<br><br><b>Total: </b></div><div class="col-md-2"><br><b>$' + dollarFormat(cur.serviceCharge) + '</b><br><br><br><b>$' + dollarFormat(cur.demandCharge) + '</b><br><br><br><b>$' + dollarFormat(cur.generationCharge) + '</b><br><br><br><b>$' + dollarFormat(total) + '</b></div></div>');
 
-    if((i + 1 ) % 5 === 0 || i === meterCount - 1){
+      $('#meter-details > div:nth-child(' + divs + ')').append('<div class="inner-meter"><table><thead><th>Meter ' + (i + 1) + ' :</th></thead><tbody><tr><td class="col-one">Meter Name:</td><td class="col-two">' + cur.meterName + '</td><td class="col-three">Service Charge (' + cur.svcProvider + '):<br>' + fourDeci(cur.usage) + 'kWh @ ' + fourDeci(cur.serviceRate) + '</td><th class="col-four">$' + dollarFormat(cur.serviceCharge) + '</th></tr><tr><td>Description:</td><td class="long-name">' + cur.meterDescription + '</td><td></td></tr><tr><td>Peak Demand:</td><td>' + cur.peakDemand + 'kW</td><td>Demand Charge (' + cur.svcProvider + '):<br>' + fourDeci(cur.peakDemand) + ' @ $' + fourDeci(cur.demandRate) + '</td><th>$' + dollarFormat(cur.demandCharge) + '</th></tr><tr><td>Peak Time:</td><td>' + cur.peakTime + '</td></tr><tr><td>Start:</td><td>' + dateFormat(cur.startTime) + '<br>' + fourDeci(cur.startValue) + 'kWh</td><td>Generation Charge (' + cur.genProvider + '):<br>' + fourDeci(cur.usage) + 'kWh @ $' + fourDeci(cur.generationRate) + '</td><th>$' + dollarFormat(cur.generationCharge) + '</th></tr><tr><td>End:</td><td>' + dateFormat(cur.endTime) + '<br>' + fourDeci(cur.endValue) + 'kWh</td><th><br>Total:</th><th><br>$' + dollarFormat(total) + '</th></tr></tbody></table></div>');
+
+    if((i + 1 ) % metersPerPage === 0 || i === meterCount - 1){
+      var lastDiv = metersPerPage + 1;
+
+      if(i === meterCount - 1){
+        // $('#meter-details > div:nth-child(' + divs + ') > div:nth-child(' + (((i + 1) % metersPerPage)+1) + ')').addClass('last-row');
+        lastDiv = ((i + 1) % metersPerPage) + 1;
+      }
+
+      $('#meter-details > div:nth-child(' + divs + ') > div:nth-child(' + lastDiv + ')').addClass('last-row');
       $('#meter-details').append('</div>');
-      if((i + 1) % 5 === 0){
+      if((i + 1) % metersPerPage === 0){
         $('#meter-details').append('<div class="repeater img-rounded pagebreak"><div class="sub-heading gray-head special">Meter Details</div>');
       }
       divs++;

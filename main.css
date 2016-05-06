@@ -2,7 +2,7 @@
 
   @font-face {
     font-family: tenantEye;
-    src: url('../Styles/ufonts.com_nevis-bold');
+    src: url('../Styles/ufonts.com_nevis-bold.ttf');
   }
 
   * {
@@ -154,8 +154,9 @@
     height: 100%;
   }
   .inner-utility {
-  	padding: 0 0 10px 10px ;
-  	margin: 5px ;
+  	padding: 0 0 50px 10px ;
+  	margin: 0px 15px 20px 15px;
+    line-height: 40%
   }
 
   .inner-data {
@@ -210,21 +211,27 @@
   }
 
   .inner-meter {
-    margin: 10px 5px 5px 10px;
+    margin: 0px 5px 5px 5px;
     border-bottom: 2px solid black;
-    padding: 15px 0px;
+    padding: 10px 0px 20px 20px;
+    line-height: 175%;
   }
+
+  .last-row {
+    border-bottom: 0px;
+  }
+
   .special {
     left: -35px;
     width: 27%;
+    height: 52.25px;
   }
 
   .repeater {
-    margin: 40px 5px 10px 0px ;
+    margin: 30px 5px 10px 0px ;
     background: #f1f2f2 ;
     border: 2px solid black ;
     padding: 0px 20px 10px 20px ;
-    line-height: 125%;
   }
 
   .pagebreak {
@@ -234,9 +241,33 @@
   .tenant-eye {
     font-family: tenantEye;
     font-size: 1.75em;
+    position: relative;
+    top: -10px;
   }
 
   .red-font {
     color: red;
   }
+
+  .table-noborder > thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: 0px;
+  }
+
+  .col-one {
+    width: calc(15%);
+  }
+
+  .col-two {
+    width: calc(45%);
+  }
+
+  .col-three {
+    width: calc(25%);
+  }
+
+  .col-four {
+    width: calc(15%);
+  }
+
 }
