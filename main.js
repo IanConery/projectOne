@@ -43,7 +43,7 @@ var dateFormat = function(date){
   var year = date[0];
   var month = date[1];
   var day = date[2].substring(0,2);
-  return months[month] + ' ' + day + ', ' + year;
+  return day + ' ' + months[month] + ', ' + year;
 };
 
 var fourDeci = function(num){
