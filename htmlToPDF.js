@@ -29,30 +29,31 @@ page.onError = function (msg, trace) {
     });
 };
 
+//this is uneccessary now
 //log requests and block requests
-page.onResourceRequested = function(data, request){
-    //Block css requests
-    if((/http:\/\/.+?\.css$/gi).test(data['url'])) {
-      //Grab the file name and add to list for local loading later
-      var fileName = /\/(\w+)\.css/gi.exec(data['url'])[1];
-      styles.push(fileName);
-      console.log('Skipping CSS', data['url']);
-      request.abort();
-    //Block all ttf requests
-    }else if((/http:\/\/.+?\.ttf$/gi).test(data['url'])){
-      //Grab the name of the font and add to list for local loading
-      //Not using regex as it wasn't capturing unusual file names
-      var url = data['url'].split('/');
-      var fileName = url[url.length - 1];
-      // var fileName = /\/(\w+)\.ttf/gi.exec(data['url'])[1];
-      fonts.push(fileName);
-      console.log('Skipping Font', data['url']);
-      request.abort();
-    }else{
-      //Log any other request so we can eventually block those too
-      console.log('::loading', data['url']);
-    }
-};
+// page.onResourceRequested = function(data, request){
+//     //Block css requests
+//     if((/http:\/\/.+?\.css$/gi).test(data['url'])) {
+//       //Grab the file name and add to list for local loading later
+//       var fileName = /\/(\w+)\.css/gi.exec(data['url'])[1];
+//       styles.push(fileName);
+//       console.log('Skipping CSS', data['url']);
+//       request.abort();
+//     //Block all ttf requests
+//     }else if((/http:\/\/.+?\.ttf$/gi).test(data['url'])){
+//       //Grab the name of the font and add to list for local loading
+//       //Not using regex as it wasn't capturing unusual file names
+//       var url = data['url'].split('/');
+//       var fileName = url[url.length - 1];
+//       // var fileName = /\/(\w+)\.ttf/gi.exec(data['url'])[1];
+//       fonts.push(fileName);
+//       console.log('Skipping Font', data['url']);
+//       request.abort();
+//     }else{
+//       //Log any other request so we can eventually block those too
+//       console.log('::loading', data['url']);
+//     }
+// };
 
 //log the response if the resource takes too long
 page.onResourceTimeout = function(request) {

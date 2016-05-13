@@ -12,6 +12,9 @@ var dollarFormat = function(num){
   if(!cents || cents.length === 0){
     cents = '00'
   }
+  if(cents.length === 1){
+    cents += "0"
+  }
   for(var i = 0; i < dollars.length; i++){
     arr.push(dollars[i]);
     if((i + 1) % 3 === 0 && i !== dollars.length - 1){
