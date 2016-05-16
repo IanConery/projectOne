@@ -74,13 +74,13 @@ page.onResourceTimeout = function(request) {
 /*************************************** End Page Error Handling ********************************************/
 
 page.onLoadFinished = function(){
-  // window.setTimeout(function(){
+  window.setTimeout(function(){
     time = new Date().getSeconds();
     console.log('Finished');
     console.log('   Time: ', time);
     page.render(system.args[2]);
     phantom.exit();
-  // },2000);
+  },2000);
 };
 
 
