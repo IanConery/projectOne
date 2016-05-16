@@ -74,13 +74,13 @@ page.onResourceTimeout = function(request) {
 /*************************************** End Page Error Handling ********************************************/
 
 page.onLoadFinished = function(){
-  window.setTimeout(function(){
+  // window.setTimeout(function(){
     time = new Date().getSeconds();
     console.log('Finished');
     console.log('   Time: ', time);
     page.render(system.args[2]);
     phantom.exit();
-  },2000);
+  // },2000);
 };
 
 
@@ -89,10 +89,10 @@ page.onLoadFinished = function(){
 page.open(system.args[1], function (status) {
   console.log('Status ' + status);
   if(status === 'success'){
-    page.evaluate(function(){
-      //.bgColor sets the background to white instead of the defaul transparent
-      document.body.bgColor = 'white';
-    });
+    // page.evaluate(function(){
+    //   //.bgColor sets the background to white instead of the defaul transparent
+    //   document.body.bgColor = 'white';
+    // });
     page.paperSize = {
       format: 'A3',//Tabloid or A3 sizes are the only ones that grab the whole page
       orientation: 'portrait',
@@ -109,7 +109,8 @@ page.open(system.args[1], function (status) {
 
   }else{
     // TODO need to handle status errors
-    console.log('Something went wrong, returning status of ' + status);
+    // console.log('Something went wrong, returning status of ' + status);
+    phantom.exit(1);
   }
 });
 
